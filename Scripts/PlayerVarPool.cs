@@ -7,6 +7,8 @@ public abstract class PlayerVarPool : MonoBehaviour
     public float yAxis;
     public float speed;
     public float health;
+    public float stamina;
+    public Vector2 movement;
     public GameObject player;
 
 

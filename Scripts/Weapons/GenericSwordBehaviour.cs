@@ -43,14 +43,4 @@ public class GenericSwordBehaviour : MonoBehaviour
             _cooldown = Mathf.Clamp(_cooldown, 0, 0.5f);
         }
     }
-
-
-
-    void ChangeAnimationState(string newstate)
-    {
-        if (currentstate == newstate) return;
-
-        animator.Play(newstate);
-        currentstate = newstate;
-    }
 }
