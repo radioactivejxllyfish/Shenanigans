@@ -26,6 +26,15 @@ public class GenericEnemyBehaviour : MonoBehaviour
             direction = _player.transform.position - transform.position;
             _rigidbody.velocity = direction.normalized * _speed;
         }
+
+        if (_health <= 50f)
+        {
+            _speed = 2.0f;
+        }
+        if (_health <= 0f)
+        {
+            Destroy(gameObject);
+        }
     }
 
 
@@ -50,6 +59,13 @@ public class GenericEnemyBehaviour : MonoBehaviour
             direction = Vector2.zero;
             _rigidbody.velocity = Vector2.zero;
         }
+
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _health -= damage;
+        Debug.Log(_health);
 
     }
 }

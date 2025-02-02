@@ -7,6 +7,8 @@ TagManager:
   - PlayerHitbox
   - Cursor
   - Interface
+  - Weapon
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -15,10 +17,10 @@ TagManager:
   - Water
   - UI
   - Weapon
+  - Enemy
   - Characters
   - Objects
   - BackGround
-  - 
   - 
   - 
   - 

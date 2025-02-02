@@ -47,21 +47,19 @@ public class PlayerController : PlayerVarPool
         {
             if (sprinting && stamina > 0 )
             {
-                speed = 15f;
+                speed = 9f;
                 stamina -= 2;
                 if (stamina < 0) stamina = 0;
-                Debug.Log("chay");
             }
             else if (!sprinting)
             {
                 speed = 5f;
                 stamina += 1;
                 if (stamina > MAX_STAMINA) stamina = MAX_STAMINA;
-                Debug.Log("hoi");
             }
             else if (stamina == 0)
             {
-                speed = 0f;
+                speed = 3f;
                 yield return new WaitForSeconds(3f);
             }
             staminaText.text = stamina.ToString();
