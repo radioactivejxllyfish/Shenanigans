@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - PlayerHitbox
+  - Cursor
+  - Interface
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Weapon
+  - Characters
+  - Objects
+  - BackGround
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: UI
+    uniqueID: 2835995231
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Weapons
+    uniqueID: 2716363115
+    locked: 0
+  - name: Characters
+    uniqueID: 428248769
+    locked: 0
+  - name: Objects
+    uniqueID: 392545535
+    locked: 0
+  - name: BackGround
+    uniqueID: 2619075055
+    locked: 0

@@ -1,0 +1,4 @@
+repository "M_Mania/M_Mania@18967600610594@cloud"
+  path "/"
+    br "/main"
+    co "/main"

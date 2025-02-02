@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GenericEnemyBehaviour : MonoBehaviour
@@ -10,7 +7,9 @@ public class GenericEnemyBehaviour : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private float _speed;
     private float _health;
+    private Vector2 direction;
     private CircleCollider2D _detector;
+    
 
     private void Start()
     {
@@ -24,7 +23,7 @@ public class GenericEnemyBehaviour : MonoBehaviour
     {
         if (_player != null)
         {
-            Vector2 direction = _player.transform.position - transform.position;
+            direction = _player.transform.position - transform.position;
             _rigidbody.velocity = direction.normalized * _speed;
         }
     }
@@ -40,5 +39,17 @@ public class GenericEnemyBehaviour : MonoBehaviour
                 _player = collider.gameObject;
             }
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("PlayerHitbox"))
+        {
+            _player = null;
+            Debug.Log("player Exit");
+            direction = Vector2.zero;
+            _rigidbody.velocity = Vector2.zero;
+        }
+
     }
 }

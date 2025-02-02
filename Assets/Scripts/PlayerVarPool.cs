@@ -7,10 +7,9 @@ public abstract class PlayerVarPool : MonoBehaviour
     public float yAxis;
     public float speed;
     public float health;
-    public float stamina;
+    public bool canSprint = true;
     public Vector2 movement;
     public GameObject player;
-
 
 
     public abstract void Move();
