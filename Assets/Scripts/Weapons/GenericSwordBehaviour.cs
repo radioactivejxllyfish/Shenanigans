@@ -1,44 +1,56 @@
 
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class GenericSwordBehaviour : GenericSword
 {
-    private CircleCollider2D _collider;
+    private PolygonCollider2D _collider;
     private Animator _animator;
     private float _heavycooldown;
     private GameObject _cursor;
     private GameObject _enemy;
     private string currentState;
     public GameObject _prefabVariant;
-
+    private string _direction = null;
     private bool _lightattack = false;
     private bool _heavyattack = false;
-    
+    private bool _idle = true;
+    private CursorController _cursorController;
     const string LAR = "LightAttackRight";
     const string HAR = "HeavyAttackRight";
+    const string LAL = "LightAttackLeft";
+    private const string HAL = "HeavyAttackLeft";
     const string IDL = "Idle";
+    
+
+    private List<GameObject> _enemies = new List<GameObject>();
     private void Start()
     {
         _player = GameObject.FindGameObjectWithTag("PlayerHitbox");
-        _collider = GetComponent<CircleCollider2D>();
+        _collider = GetComponent<PolygonCollider2D>();
         _lightdamage = 10f;
         _heavydamage = 25f;
         _cooldown = 0.5f;
         _heavycooldown = 1f;
         _animator = GetComponent<Animator>();
         _cursor = GameObject.FindGameObjectWithTag("Cursor");
+        _cursorController = _cursor.GetComponent<CursorController>();
         Debug.Log(_collider);
+        StartCoroutine("LightAttackRight");
+        StartCoroutine("HeavyAttackRight");
+        
     }
 
     void Update()
     {
+        
         Throw();
         Transformer();
         OnAttackCoolDown();
-        if (Input.GetKeyDown(KeyCode.Mouse0) && _cooldown <= 0)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && _cooldown <= 0 && _heavycooldown <= 0)
         {
             LightAttack();
             _cooldown = 0.5f;
@@ -52,34 +64,38 @@ public class GenericSwordBehaviour : GenericSword
             _heavycooldown = 1f;
         }
 
-        if (_heavycooldown != 0 && _cooldown != 0)
+        if (_idle && _lightattack == false && _heavyattack == false)
         {
             ChangeAnimationState(IDL);
         }
-
+        _direction = _cursorController.Direction;
 
     }
 
     public override void LightAttack()
     {
-        ChangeAnimationState(LAR);
         Debug.Log("LightAttack");
         _lightattack = true;
-        if (_enemy != null)
+        if (_enemies != null)
         {
-            _enemy.GetComponent<GenericEnemyBehaviour>().TakeDamage(_lightdamage);
-
+            foreach (GameObject _enemy in _enemies)
+            {
+                _enemy.GetComponent<GenericEnemyBehaviour>().TakeDamage(_lightdamage);
+            }
         }
     }
 
     public override void HeavyAttack()
     {
-        _heavyattack = true;
         Debug.Log("HeavyAttack");
-        if (_enemy != null)
-        {
-            _enemy.GetComponent<GenericEnemyBehaviour>().TakeDamage(_heavydamage);
-
+        _heavyattack = true;
+        if (_enemies != null)
+        { 
+            foreach (GameObject _enemy in _enemies)
+            {
+                _enemy.GetComponent<GenericEnemyBehaviour>().TakeDamage(_heavydamage);
+            }
+            
         }
     }
 
@@ -109,17 +125,17 @@ public class GenericSwordBehaviour : GenericSword
         {
             if (collider.CompareTag("Enemy"))
             {
+                _enemies.Add(collider.gameObject);
                 Debug.Log("EnemyFound");
-                _enemy = collider.gameObject;
             }
         }
     }
     
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.CompareTag("Enemy"))
         {
-            _enemy = null;
+            _enemies.Remove(other.gameObject);
             Debug.Log("EnemyLeft");
         }
             
@@ -132,6 +148,56 @@ public class GenericSwordBehaviour : GenericSword
             Instantiate(_prefabVariant, transform.position, transform.rotation);
             Destroy(gameObject);
             
+        }
+    }
+
+    private IEnumerator LightAttackRight()
+    {
+        while (true)
+        {
+            if (_lightattack)
+            {
+                _idle = false;
+                if (_direction == "Left")
+                {
+                    ChangeAnimationState(LAL);
+                }
+                else if (_direction == "Right")
+                {
+                    ChangeAnimationState(LAR);
+                }
+                _lightattack = false;
+                yield return new WaitForSeconds(_cooldown);
+                _idle = true;
+            }
+            else
+            {
+                yield return null;
+            }
+        }
+    }
+
+    private IEnumerator HeavyAttackRight()
+    {
+        while (true)
+        {
+            if (_heavyattack)
+            {
+                _idle = false;
+                if (_direction == "Left")
+                {
+                    ChangeAnimationState(HAL);
+                }
+                else if (_direction == "Right")
+                {
+                    ChangeAnimationState(HAR);
+                }
+                _heavyattack = false;
+                yield return new WaitForSeconds(_heavycooldown);
+                _idle = true;
+            }
+
+            yield return null;
         }
     }
     

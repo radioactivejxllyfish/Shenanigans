@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GenericEnemyBehaviour : MonoBehaviour
 {
@@ -7,20 +9,30 @@ public class GenericEnemyBehaviour : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private float _speed;
     private float _health;
+    private float _maxhealth;
+    private bool _tookdmg = true;
     private Vector2 direction;
     private CircleCollider2D _detector;
+    private SpriteRenderer _renderer;
+    private Slider _healthBar;
     
-
+    
     private void Start()
     {
         _speed = 2.6f;
         _health = 100f;
+        _maxhealth = 100f;
         _rigidbody = GetComponent<Rigidbody2D>();
+        _healthBar = GetComponentInChildren<Slider>();
         _detector = GetComponent<CircleCollider2D>();
+        _renderer = GetComponent<SpriteRenderer>();
+        StartCoroutine("TakingDamage");
     }
 
     private void Update()
     {
+        _healthBar.value = _health / _maxhealth;
+        Mathf.Clamp(_health, 0f, 100f);
         if (_player != null)
         {
             direction = _player.transform.position - transform.position;
@@ -35,6 +47,7 @@ public class GenericEnemyBehaviour : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
     }
 
 
@@ -62,10 +75,26 @@ public class GenericEnemyBehaviour : MonoBehaviour
 
     }
 
+
+    private IEnumerator TakingDamage()
+    {
+        while (true)
+        {
+            if (_tookdmg)
+            {
+                _renderer.color = Color.blue;
+                yield return new WaitForSeconds(0.2f);
+                _renderer.color = Color.red;
+                _tookdmg = false;
+            }
+
+            yield return null;
+        }
+    }
     public void TakeDamage(float damage)
     {
         _health -= damage;
+        _tookdmg = true;
         Debug.Log(_health);
-
     }
 }

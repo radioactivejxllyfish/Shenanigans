@@ -9,6 +9,7 @@ public class PlayerController : PlayerVarPool
     private int stamina = 100;
     private static readonly byte MAX_STAMINA = 100;
     bool sprinting;
+    public Slider _staminaBar;
     private void Start()
     {
         playerRb = GetComponent<Rigidbody2D>();
@@ -19,8 +20,9 @@ public class PlayerController : PlayerVarPool
     
     private void Update()
     {
+        _staminaBar.value = stamina;
         Move();
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && canSprint)
         {
             sprinting = true;
         }
@@ -59,15 +61,19 @@ public class PlayerController : PlayerVarPool
             }
             else if (stamina == 0)
             {
+                canSprint = false;
                 speed = 3f;
                 yield return new WaitForSeconds(3f);
             }
-            staminaText.text = stamina.ToString();
+
+            if (!canSprint && stamina > 30)
+            {
+                canSprint = true;
+            }
             yield return new WaitForSeconds(0.1f);
         }
 
 
     }
-
-    public Text staminaText;
+    
 }
