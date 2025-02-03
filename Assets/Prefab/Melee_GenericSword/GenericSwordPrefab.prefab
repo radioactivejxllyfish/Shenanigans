@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2670970005847070973}
   - component: {fileID: 3420019868122400413}
   - component: {fileID: 4712486039316540402}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GenericSwordPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}

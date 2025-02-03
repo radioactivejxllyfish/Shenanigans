@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlayerAnimationHandler : PlayerController
 {
     private Animator animator;
-    private bool _isWalking;
-    private bool _idle;
     private float _velocity;
 
     private string currentState;
@@ -29,13 +27,10 @@ public class PlayerAnimationHandler : PlayerController
         if (playerRb.velocity.magnitude > 0.2f)
         {
             ChangeAnimationState(WALK);
-            _isWalking = true;
         }
         else
         {
             ChangeAnimationState(IDLE);
-            _isWalking = false;
-            _idle = true;
         }
     }
 

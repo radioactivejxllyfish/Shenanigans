@@ -1,6 +1,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,10 +20,11 @@ public class GenericSwordBehaviour : GenericSword
     private bool _heavyattack = false;
     private bool _idle = true;
     private CursorController _cursorController;
+    
     const string LAR = "LightAttackRight";
     const string HAR = "HeavyAttackRight";
     const string LAL = "LightAttackLeft";
-    private const string HAL = "HeavyAttackLeft";
+    const string HAL = "HeavyAttackLeft";
     const string IDL = "Idle";
     
 
@@ -74,26 +76,24 @@ public class GenericSwordBehaviour : GenericSword
 
     public override void LightAttack()
     {
-        Debug.Log("LightAttack");
         _lightattack = true;
         if (_enemies != null)
         {
             foreach (GameObject _enemy in _enemies)
             {
-                _enemy.GetComponent<GenericEnemyBehaviour>().TakeDamage(_lightdamage);
+                _enemy.GetComponent<GruntEnemyBehaviour>().TakeDamage(_lightdamage);
             }
         }
     }
 
     public override void HeavyAttack()
     {
-        Debug.Log("HeavyAttack");
         _heavyattack = true;
         if (_enemies != null)
         { 
             foreach (GameObject _enemy in _enemies)
             {
-                _enemy.GetComponent<GenericEnemyBehaviour>().TakeDamage(_heavydamage);
+                _enemy.GetComponent<GruntEnemyBehaviour>().TakeDamage(_heavydamage);
             }
             
         }

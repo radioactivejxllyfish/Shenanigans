@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 863086034421471093}
   - component: {fileID: 5192177850763416193}
   - component: {fileID: 3217042573670391987}
-  - component: {fileID: 3227849421382345584}
+  - component: {fileID: 8090911996732761536}
   m_Layer: 6
   m_Name: GenericSword (1) 1
   m_TagString: Weapon
@@ -73,8 +73,8 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!58 &3227849421382345584
-CircleCollider2D:
+--- !u!60 &8090911996732761536
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -85,10 +85,10 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1062
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
@@ -105,9 +105,24 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.10224325}
-  serializedVersion: 2
-  m_Radius: 0.11316208
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.0016970634, y: -0.02563937}
+      - {x: 0.19290927, y: 0.1849427}
+      - {x: 0.00009021908, y: 0.2676527}
+      - {x: -0.18834388, y: 0.18681279}
+      - {x: 0.001175791, y: -0.028746068}
+  m_UseDelaunayMesh: 0
 --- !u!1 &6919992691807751994
 GameObject:
   m_ObjectHideFlags: 0

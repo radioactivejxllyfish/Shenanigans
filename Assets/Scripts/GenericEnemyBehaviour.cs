@@ -26,7 +26,6 @@ public class GenericEnemyBehaviour : MonoBehaviour
         _healthBar = GetComponentInChildren<Slider>();
         _detector = GetComponent<CircleCollider2D>();
         _renderer = GetComponent<SpriteRenderer>();
-        StartCoroutine("TakingDamage");
     }
 
     private void Update()
@@ -74,23 +73,7 @@ public class GenericEnemyBehaviour : MonoBehaviour
         }
 
     }
-
-
-    private IEnumerator TakingDamage()
-    {
-        while (true)
-        {
-            if (_tookdmg)
-            {
-                _renderer.color = Color.blue;
-                yield return new WaitForSeconds(0.2f);
-                _renderer.color = Color.red;
-                _tookdmg = false;
-            }
-
-            yield return null;
-        }
-    }
+    
     public void TakeDamage(float damage)
     {
         _health -= damage;
