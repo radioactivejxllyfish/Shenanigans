@@ -26,7 +26,7 @@
 +GenericEnemy Healthbar  
 +Stamina bar
   
-## 0.003a [Planned]  
+## 0.003a [2/3/2025]  
 +Enemy code refactoring  
 +Enemy spawning system  
 -Placeholder UI  
