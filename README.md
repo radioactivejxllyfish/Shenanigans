@@ -29,7 +29,7 @@
 ## 0.003a [2/3/2025]  
 +Enemy code refactoring  
 +Enemy spawning system  
--Placeholder UI  
++Placeholder UI  
 -GenericEnemy combat system  
 
 # 0.0.3d [2/15/2025]  
