@@ -10,6 +10,7 @@ TagManager:
   - Weapon
   - Enemy
   - GameManager
+  - PlayerRB
   layers:
   - Default
   - TransparentFX
@@ -44,21 +45,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: UI
-    uniqueID: 2835995231
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Weapons
-    uniqueID: 2716363115
+  - name: _BackGround
+    uniqueID: 2619075055
     locked: 0
-  - name: Characters
-    uniqueID: 428248769
-    locked: 0
-  - name: Objects
+  - name: _Objects
     uniqueID: 392545535
     locked: 0
-  - name: BackGround
-    uniqueID: 2619075055
+  - name: _Characters
+    uniqueID: 428248769
+    locked: 0
+  - name: _Weapons
+    uniqueID: 2716363115
+    locked: 0
+  - name: _UI
+    uniqueID: 2835995231
     locked: 0
