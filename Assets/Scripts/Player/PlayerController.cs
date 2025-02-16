@@ -24,6 +24,7 @@ public class PlayerController : PlayerVarPool
         speed = 5f;
         health = 100f;
         StartCoroutine("Sprint");
+        hasDashed = false;
     }
     
     private void Update()
@@ -40,7 +41,7 @@ public class PlayerController : PlayerVarPool
             sprinting = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && !hasDashed && stamina >= 35 && canDash && !isStunned)
+        if (Input.GetKeyDown(KeyCode.Space) && !hasDashed && stamina >= 35 && canDash && !isStunned)
         {
             StartCoroutine("Dash");
         }
