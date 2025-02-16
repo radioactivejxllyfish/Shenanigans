@@ -24,15 +24,24 @@
 +Basic combat interaction system  
 +Weapon instantiation system  
 +GenericEnemy Healthbar  
-+Stamina bar
++Stamina bar  
   
 ## 0.003a [2/3/2025]  
 +Enemy code refactoring  
 +Enemy spawning system  
--Placeholder UI  
++Placeholder UI  
 -GenericEnemy combat system  
 
-## 0.003f [Planned]  
--Placeholder looting system  
--Healing medpacks  
--Loot spawner  
+# 0.0.3d [2/15/2025]  
++New UI  
++Reworked player sprites & animations  
++New fonts  
++Camera shake  
+
+
+## 0.0.4  
+-Rework default melee  
+-Rework default ranged  
+-Add bullet effects  
+-Add effects system   
+
