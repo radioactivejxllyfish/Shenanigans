@@ -7,12 +7,12 @@ using UnityEngine.UI;
 
 public class PlayerController : PlayerVarPool
 {
-    private float _dashpower;
-    private bool canDash = true;
+    public float _dashpower;
+    public bool canDash = true;
     public bool hasDashed = false;
-    private int stamina = 100;
-    private static readonly byte MAX_STAMINA = 100;
-    bool sprinting;
+    public float stamina = 100;
+    public float MAX_STAMINA = 100;
+    public bool sprinting;
     public bool isDashing = false;
     public Slider _staminaBar;
     public PlayerAnimationHandler animatorHandler;

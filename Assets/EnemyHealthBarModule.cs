@@ -8,19 +8,20 @@ public class EnemyHealthBarModule : MonoBehaviour
     private float _maxhealth;
 
     private GameObject _target;
-    private ValueDumper _script;
+    private BasicEnemy _script;
     private Slider _slider;
     
     void Start()
     {
-        _script = _target.GetComponentInParent<ValueDumper>();
-        _slider = GetComponent<Slider>();
+        _script = GetComponentInParent<BasicEnemy>();
+        _slider = GetComponentInChildren<Slider>();
     }
 
     void Update()
     {
-        _maxhealth = _script.maxhealthdump;
-        _health = _script.healthdump;
+        Debug.Log(_health);
+        _maxhealth = _script.maxhealth;
+        _health = _script.health;
         _slider.value = _health / _maxhealth;
         Mathf.Clamp(_health, 0f, _maxhealth);
     }

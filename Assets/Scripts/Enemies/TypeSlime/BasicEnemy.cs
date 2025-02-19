@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class BasicEnemy : MonoBehaviour
@@ -26,6 +27,23 @@ public class BasicEnemy : MonoBehaviour
     {
         health -= damage;
         speed -= speed * (5f/100f) ;
+    }
+
+    public IEnumerator knockBackCR(float strength, Vector2 kbdir)
+    {
+        float duration = 0.5f;
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            rigidBody.gravityScale = 1;
+            rigidBody.AddForce((kbdir.normalized + Vector2.up) * strength, ForceMode2D.Force);
+            yield return null;
+        }
+
+        yield return null;
+
+
     }
 
 }
