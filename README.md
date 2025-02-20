@@ -40,7 +40,7 @@
 
 
 ## 0.0.4  
--Rework default melee  
++Rework default melee  
 -Rework default ranged  
 -Add bullet effects  
 -Add effects system   
