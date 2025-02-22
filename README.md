@@ -41,8 +41,10 @@
 
 ## 0.0.4  
 +Add effects system[a]   
-+Rework default melee[a]  
-+Rework default ranged[b]    
++Reworked player sprites & animations[b]  
++Omnimovement animations[b]  
++Reworked default melee[a]  
++Reworked default ranged[b]    
 -Add bullet effects  
 
 
