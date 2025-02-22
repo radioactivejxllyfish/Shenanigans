@@ -11,8 +11,8 @@ public class BasicRifle : MonoBehaviour
     public GameObject cursor;
     public GameObject cameraObject;
     public Animator animator;
-    public ParticleSystem shellEject;
     public CursorController cursorController;
+    public PlayerController playerController;
 
     public float spread;
     public float damage;
@@ -21,10 +21,13 @@ public class BasicRifle : MonoBehaviour
     public int ammoCount;
     public int magazineCapacity;
     public int currentAmmo;
+    public int idleStyle;
+    public string currentState;
     public Vector3 direction;
 
     public bool isReloading;
     public bool canFire;
+    public bool isFiring;
 
     
     
@@ -32,8 +35,9 @@ public class BasicRifle : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("PlayerRB");
         cursor = GameObject.FindGameObjectWithTag("Cursor");
-        shellEject = GetComponentInChildren<ParticleSystem>();
         cursorController = cursor.GetComponent<CursorController>();
+        playerController = player.GetComponent<PlayerController>();
+        animator = GetComponentInChildren<Animator>();
 
         spread = 0.05f;
         fireRate = 0.15f;
@@ -47,8 +51,24 @@ public class BasicRifle : MonoBehaviour
 
     void Update()
     {
+        Reload();
         Transformer();
         Fire1();
+        if (!isFiring && !isReloading)
+        {
+            if (idleStyle == 4)
+            {
+                ChangeAnimationState("Idle");
+            }
+            else if (idleStyle == 5)
+            {
+                ChangeAnimationState("Idle2");
+            }
+            else
+            {
+                ChangeAnimationState("IdleDefault");
+            }
+        }
     }
 
     private void Fire1()
@@ -56,6 +76,17 @@ public class BasicRifle : MonoBehaviour
         if (Input.GetMouseButton(0) && currentAmmo > 0 && canFire)
         {
             StartCoroutine(Fire());
+        }
+    }
+
+    private void Reload()
+    {
+        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < magazineCapacity && ammoReserve >0)
+        {
+            int deductedAmmo = magazineCapacity - currentAmmo;
+            ammoReserve -= deductedAmmo;
+            currentAmmo = magazineCapacity;
+            StartCoroutine(ReloadIE());
         }
     }
 
@@ -67,18 +98,18 @@ public class BasicRifle : MonoBehaviour
         transform.position = player.transform.position;
         transform.right = direction.normalized;
         
-        if (cursorController.Direction == "Right")
+        if (cursorController.Direction == "Right" && !playerController.isDashing)
         {
             transform.localScale = new Vector3(1f, 1f, 1f);
         }
-        else if (cursorController.Direction == "Left")
+        else if (cursorController.Direction == "Left" && !playerController.isDashing)
         {
             transform.localScale = new Vector3(1f, -1f, 1f);
         }
 
-        if (x == -1)
+        if (transform.rotation == Quaternion.Euler(0,180,0))
         {
-            transform.localScale = new Vector3(1f, -1f, 1f);
+            transform.localScale = new Vector3(1f, 1f, 1f);
         }
 
     }
@@ -86,12 +117,36 @@ public class BasicRifle : MonoBehaviour
 
     private IEnumerator Fire()
     {
+        isFiring = true;
         canFire = false;
-        shellEject.Play();
         currentAmmo -= 1;
         Instantiate(bullet, bore.transform.position, bore.transform.rotation );
+        ChangeAnimationState("Fire");
         yield return new WaitForSeconds(fireRate);
         canFire = true;
-        shellEject.Stop();
+        isFiring = false;
+    }
+
+    private IEnumerator ReloadIE()
+    {
+        canFire = false;
+        isReloading = true;
+        ChangeAnimationState("Reload");
+        yield return new WaitForSeconds(2.35f);
+        canFire = true;
+        isReloading = false;
+        idleStyle = Random.Range(1, 8);
+        Debug.Log(ammoReserve);
+    }
+    
+    public void ChangeAnimationState(string newState)
+    {
+        // stop the animation from interrupting itself
+        if (currentState == newState) return;
+        // play animation
+        animator.Play(newState); 
+        // reassign current state   
+        currentState = newState;
+        
     }
 }

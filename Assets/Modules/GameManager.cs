@@ -32,5 +32,6 @@ public class GameManager : MonoBehaviour
     {
         score += scoreToAdd;
         scoreToAdd = 0;
+        
     }
 }

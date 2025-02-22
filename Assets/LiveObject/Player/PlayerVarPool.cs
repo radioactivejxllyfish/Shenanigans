@@ -10,6 +10,7 @@ public abstract class PlayerVarPool : MonoBehaviour
     public bool canSprint = true;
     public Vector3 movement;
     public GameObject player;
+    public GameObject cursor;
 
 
     public abstract void Move();

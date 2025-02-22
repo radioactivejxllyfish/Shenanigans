@@ -16,12 +16,17 @@ public class PlayerController : PlayerVarPool
     public bool isDashing = false;
     public Slider _staminaBar;
     public PlayerAnimationHandler animatorHandler;
+    public CursorController _cursorController;
     public bool isStunned = false;
     public bool ShadowStriking;
+    public string dashDir = "LeftF";
+    public string walkDir = "LeftF";
     private void Start()
     {
+        cursor = GameObject.FindGameObjectWithTag("Cursor");
+        _cursorController = cursor.GetComponent<CursorController>();
         playerRb = GetComponent<Rigidbody2D>();
-        _dashpower = 10f;
+        _dashpower = 8f;
         speed = 5f;
         health = 100f;
         StartCoroutine("Sprint");
@@ -30,9 +35,16 @@ public class PlayerController : PlayerVarPool
     
     private void Update()
     {
+        MovementInput();
         _staminaBar.value = stamina;
         Dash();
         Move();
+    }
+
+
+
+    private void MovementInput()
+    {
         if (Input.GetKey(KeyCode.LeftShift) && canSprint && !isStunned)
         {
             sprinting = true;
@@ -44,15 +56,18 @@ public class PlayerController : PlayerVarPool
 
         if (Input.GetKeyDown(KeyCode.Space) && !hasDashed && stamina >= 35 && canDash && !isStunned && !ShadowStriking && movement != Vector3.zero)
         {
+
             StartCoroutine("Dash");
         }
     }
-
-
     public override void Move()
     {
-        xAxis = Input.GetAxisRaw("Horizontal");
-        yAxis = Input.GetAxisRaw("Vertical");
+        if (!isDashing)
+        {
+            xAxis = Input.GetAxisRaw("Horizontal");
+            yAxis = Input.GetAxisRaw("Vertical");
+        }
+        WalkDirection();
         movement = new Vector2(xAxis, yAxis);
         if (isStunned || ShadowStriking)
         {
@@ -62,28 +77,128 @@ public class PlayerController : PlayerVarPool
         {
             playerRb.velocity = movement.normalized * speed;
         }
+        
         if (playerRb.velocity.magnitude >= 0.4f && !isDashing && !sprinting)
         {
-            animatorHandler.ChangeAnimationState("Walk");
+            if (walkDir == "LeftF")
+            {
+                animatorHandler.ChangeAnimationState("Walk");
+            }
+            else if (walkDir == "LeftB")
+            {
+                animatorHandler.ChangeAnimationState("BackwardsWalk");
+            }
+            else if (walkDir == "RightF")
+            {
+                animatorHandler.ChangeAnimationState("Walk");
+            }
+            else if (walkDir == "RightB")
+            {
+                animatorHandler.ChangeAnimationState("BackwardsWalk");
+            }
         }
-        else if (isDashing)
-        {
-            animatorHandler.ChangeAnimationState("Roll");
-        }
-        else if (playerRb.velocity.magnitude <= 0.2f && !ShadowStriking)
+        else if (playerRb.velocity.magnitude <= 0.2f && !ShadowStriking && !isDashing)
         {
             animatorHandler.ChangeAnimationState("Idle");
         }
-        else if (sprinting)
+        else if (sprinting && !isDashing)
         {
-            animatorHandler.ChangeAnimationState("Run");
+            if (walkDir == "LeftF")
+            {
+                animatorHandler.ChangeAnimationState("Run");
+            }
+            else if (walkDir == "LeftB")
+            {
+                animatorHandler.ChangeAnimationState("BackwardsRun");
+            }
+            else if (walkDir == "RightF")
+            {
+                animatorHandler.ChangeAnimationState("Run");
+            }
+            else if (walkDir == "RightB")
+            {
+                animatorHandler.ChangeAnimationState("BackwardsRun");
+            }
         }
-        else if (ShadowStriking)
+        else if (ShadowStriking && !isDashing)
         {
             animatorHandler.ChangeAnimationState("ShadowStrike");
         }
+        else if (isDashing)
+        {
+            if (dashDir == "LeftF")
+            {
+                animatorHandler.ChangeAnimationState("Roll");
+            }
+            else if (dashDir == "LeftB")
+            {
+                animatorHandler.ChangeAnimationState("BackwardsRoll");
+            }
+            else if (dashDir == "RightF")
+            {
+                animatorHandler.ChangeAnimationState("Roll");
+            }
+            else if (dashDir == "RightB")
+            {
+                animatorHandler.ChangeAnimationState("BackwardsRoll");
+            }
+            else if (dashDir == "Roll")
+            {
+                animatorHandler.ChangeAnimationState("Roll");
+            }
+        }
         
         
+    }
+
+    private void RollDirection()
+    {
+
+            if (movement.normalized.x < 0 && _cursorController.Direction == "Left")
+            {
+                dashDir = "LeftF";
+            }
+            else if (movement.normalized.x > 0 && _cursorController.Direction == "Left")
+            {
+                dashDir = "LeftB";
+            }
+            else if (movement.normalized.x > 0 && _cursorController.Direction == "Right")
+            {
+                dashDir = "RightF";
+            }
+            else if (movement.normalized.x < 0 && _cursorController.Direction == "Right")
+            {
+                dashDir = "RightB";
+            }
+            else if (movement.normalized.x == 0)
+            {
+                walkDir = "Roll";
+            }
+    }
+    
+    private void WalkDirection()
+    {
+
+        if (movement.normalized.x < 0 && _cursorController.Direction == "Left")
+        {
+            walkDir = "LeftF";
+        }
+        else if (movement.normalized.x > 0 && _cursorController.Direction == "Left")
+        {
+            walkDir = "LeftB";
+        }
+        else if (movement.normalized.x > 0 && _cursorController.Direction == "Right")
+        {
+            walkDir = "RightF";
+        }
+        else if (movement.normalized.x < 0 && _cursorController.Direction == "Right")
+        {
+            walkDir = "RightB";
+        }
+        else if (movement.normalized.x == 0)
+        {
+            walkDir = "LeftF";
+        }
     }
 
 
@@ -120,32 +235,31 @@ public class PlayerController : PlayerVarPool
 
     }
 
-    private void DashAnim()
+    private void StunTrigger()
     {
         isStunned = true;
-        animatorHandler.ChangeAnimationState("Roll");
     }
     private IEnumerator Dash()
     {
+        RollDirection();
+        Vector2 direction = movement.normalized;
+        yield return new WaitForSeconds(0.01f);
         canDash = false;
         isDashing = true;
-        Vector2 guh = new Vector2(movement.x, movement.y);
         stamina -= 25;
-        float duration = 0.5f;
+        float duration = 0.6f;
         float elapsed = 0.0f;
-        Invoke("DashAnim", 0.6f);
+        Invoke("StunTrigger", 0.6f);
         while (elapsed < duration)
         {
-            playerRb.AddForce(guh * _dashpower, ForceMode2D.Impulse);
+            playerRb.AddForce(direction * _dashpower, ForceMode2D.Impulse);
             elapsed += Time.deltaTime;
             yield return null;
         }
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(1.1f);
         isDashing = false;
         canDash = true;
         isStunned = false;
-
-
     }
     
     
