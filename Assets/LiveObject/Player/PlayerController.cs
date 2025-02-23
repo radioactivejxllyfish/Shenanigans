@@ -197,7 +197,7 @@ public class PlayerController : PlayerVarPool
         }
         else if (movement.normalized.x == 0)
         {
-            walkDir = "LeftF";
+            walkDir = "RightF";
         }
     }
 

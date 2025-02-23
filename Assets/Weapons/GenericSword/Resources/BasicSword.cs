@@ -49,7 +49,7 @@ public class BasicSword : MonoBehaviour
 
     }
 
-    void Update()
+    void FixedUpdate()
     {
         SwordWield();
         
@@ -59,11 +59,11 @@ public class BasicSword : MonoBehaviour
     private void SwordWield()
     {
         transform.position = Vector3.Lerp(transform.position, player.transform.position , 0.1f);
-        if (cursorController.Direction == "Right")
+        if (cursorController.Direction == "Right" && !playerController.isDashing)
         {
             transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
         }
-        else if (cursorController.Direction == "Left")
+        else if (cursorController.Direction == "Left" && !playerController.isDashing)
         {
             transform.localScale = new Vector3(-0.75f, 0.75f, 0.75f);
         }

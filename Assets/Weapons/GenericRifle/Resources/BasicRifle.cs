@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using UnityEngine;
 
 public class BasicRifle : MonoBehaviour
@@ -13,6 +14,7 @@ public class BasicRifle : MonoBehaviour
     public Animator animator;
     public CursorController cursorController;
     public PlayerController playerController;
+    public AudioSource source;
 
     public float spread;
     public float damage;
@@ -29,7 +31,8 @@ public class BasicRifle : MonoBehaviour
     public bool canFire;
     public bool isFiring;
 
-    
+    public AudioClip fireFX;
+    public AudioClip reloadFX;
     
     void Start()
     {
@@ -38,9 +41,10 @@ public class BasicRifle : MonoBehaviour
         cursorController = cursor.GetComponent<CursorController>();
         playerController = player.GetComponent<PlayerController>();
         animator = GetComponentInChildren<Animator>();
+        source = GetComponent<AudioSource>();
 
         spread = 0.05f;
-        fireRate = 0.15f;
+        fireRate = 0.1f;
         ammoReserve = 90;
         magazineCapacity = 30;
 
@@ -117,6 +121,8 @@ public class BasicRifle : MonoBehaviour
 
     private IEnumerator Fire()
     {
+        source.clip = fireFX;
+        source.Play();
         isFiring = true;
         canFire = false;
         currentAmmo -= 1;
@@ -129,6 +135,8 @@ public class BasicRifle : MonoBehaviour
 
     private IEnumerator ReloadIE()
     {
+        source.clip = reloadFX;
+        source.Play();
         canFire = false;
         isReloading = true;
         ChangeAnimationState("Reload");
