@@ -32,7 +32,7 @@
 +Placeholder UI  
 -GenericEnemy combat system  
 
-# 0.0.3d [2/15/2025]  
+## 0.0.3d [2/15/2025]  
 +New UI  
 +Reworked player sprites & animations  
 +New fonts  
@@ -40,10 +40,10 @@
 
 
 ## 0.0.4  [2/23/2025]  
-+Add effects system
-+Reworked player sprites & animations
-+Omnimovement animations
-+Reworked default melee
-+Reworked default ranged
++Add effects system  
++Reworked player sprites & animations  
++Omnimovement animations  
++Reworked default melee  
++Reworked default ranged  
 
 
