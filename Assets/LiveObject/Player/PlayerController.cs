@@ -45,7 +45,7 @@ public class PlayerController : PlayerVarPool
 
     private void MovementInput()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && canSprint && !isStunned)
+        if (Input.GetKey(KeyCode.LeftShift) && canSprint && !isStunned && movement != Vector3.zero)
         {
             sprinting = true;
         }

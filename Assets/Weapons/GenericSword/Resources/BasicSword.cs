@@ -43,12 +43,13 @@ public class BasicSword : MonoBehaviour
         cursorController = cursor.GetComponent<CursorController>();
         playerController = player.GetComponent<PlayerController>();
         cameraSmoother = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraSmoother>();
+    }
 
-        
+    private void OnEnable()
+    {
         StartCoroutine("Attack");
 
     }
-
     void FixedUpdate()
     {
         SwordWield();
@@ -58,7 +59,7 @@ public class BasicSword : MonoBehaviour
 
     private void SwordWield()
     {
-        transform.position = Vector3.Lerp(transform.position, player.transform.position , 0.1f);
+        transform.position = player.transform.position;
         if (cursorController.Direction == "Right" && !playerController.isDashing)
         {
             transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);

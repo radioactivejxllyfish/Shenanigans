@@ -93,7 +93,6 @@ public class ShadowSlash : MonoBehaviour
             yield return new WaitForSeconds(0.4f);
         }
 
-        yield return null;
     }
     
     private void OnTriggerEnter2D(Collider2D collider)

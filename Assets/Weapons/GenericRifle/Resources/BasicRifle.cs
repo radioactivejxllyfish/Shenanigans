@@ -44,8 +44,8 @@ public class BasicRifle : MonoBehaviour
         source = GetComponent<AudioSource>();
 
         spread = 0.05f;
-        fireRate = 0.1f;
-        ammoReserve = 90;
+        fireRate = 0.08f;
+        ammoReserve = 120;
         magazineCapacity = 30;
 
         currentAmmo = 30;
@@ -53,11 +53,12 @@ public class BasicRifle : MonoBehaviour
         canFire = true;
     }
 
-    void Update()
+
+
+    private void FixedUpdate()
     {
-        Reload();
-        Transformer();
         Fire1();
+        Transformer();
         if (!isFiring && !isReloading)
         {
             if (idleStyle == 4)
@@ -81,11 +82,7 @@ public class BasicRifle : MonoBehaviour
         {
             StartCoroutine(Fire());
         }
-    }
-
-    private void Reload()
-    {
-        if (Input.GetKeyDown(KeyCode.R) && currentAmmo < magazineCapacity && ammoReserve >0)
+        else if (Input.GetKeyDown(KeyCode.R) && currentAmmo < magazineCapacity && ammoReserve >0 && !Input.GetMouseButton(0))
         {
             int deductedAmmo = magazineCapacity - currentAmmo;
             ammoReserve -= deductedAmmo;
@@ -93,6 +90,7 @@ public class BasicRifle : MonoBehaviour
             StartCoroutine(ReloadIE());
         }
     }
+
 
     private void Transformer()
     {
@@ -135,6 +133,7 @@ public class BasicRifle : MonoBehaviour
 
     private IEnumerator ReloadIE()
     {
+        yield return new WaitForSeconds(0.2f);
         source.clip = reloadFX;
         source.Play();
         canFire = false;
@@ -144,7 +143,6 @@ public class BasicRifle : MonoBehaviour
         canFire = true;
         isReloading = false;
         idleStyle = Random.Range(1, 8);
-        Debug.Log(ammoReserve);
     }
     
     public void ChangeAnimationState(string newState)
