@@ -15,12 +15,17 @@ public class PlayerController : PlayerVarPool
     public bool sprinting;
     public bool isDashing = false;
     public Slider _staminaBar;
+    public Slider healthBar;
     public PlayerAnimationHandler animatorHandler;
     public CursorController _cursorController;
     public bool isStunned = false;
     public bool ShadowStriking;
     public string dashDir = "LeftF";
     public string walkDir = "LeftF";
+
+
+    public GameObject grenade;
+    public int grenadeCount;
     private void Start()
     {
         cursor = GameObject.FindGameObjectWithTag("Cursor");
@@ -28,20 +33,33 @@ public class PlayerController : PlayerVarPool
         playerRb = GetComponent<Rigidbody2D>();
         _dashpower = 8f;
         speed = 5f;
-        health = 100f;
+        maxHealth = 100f;
+        health = maxHealth;
         StartCoroutine("Sprint");
+        StartCoroutine("HpRegen");
         hasDashed = false;
+        grenadeCount = 3;
     }
     
     private void Update()
     {
         MovementInput();
-        _staminaBar.value = stamina;
+        _staminaBar.value = stamina / MAX_STAMINA;
+        healthBar.value = health / maxHealth;
         Dash();
         Move();
+        OnDeath();
+        ThrowGrenade();
     }
 
 
+    private void ThrowGrenade()
+    {
+        if (Input.GetKeyDown(KeyCode.G) && !isStunned && grenadeCount > 0)
+        {
+            Instantiate(grenade, transform.position, transform.rotation);
+        }
+    }
 
     private void MovementInput()
     {
@@ -60,7 +78,7 @@ public class PlayerController : PlayerVarPool
             StartCoroutine("Dash");
         }
     }
-    public override void Move()
+    public void Move()
     {
         if (!isDashing)
         {
@@ -151,6 +169,21 @@ public class PlayerController : PlayerVarPool
         
     }
 
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+    }
+
+    public void OnDeath()
+    {
+        if (health <= 0)
+        {
+            animatorHandler.ChangeAnimationState("Death");
+            Destroy(gameObject, 3f);
+        }
+    }
+
     private void RollDirection()
     {
 
@@ -210,13 +243,13 @@ public class PlayerController : PlayerVarPool
             if (sprinting && stamina > 0 )
             {
                 speed = 9f;
-                stamina -= 2;
+                stamina -= 2f;
                 if (stamina < 0) stamina = 0;
             }
             else if (!sprinting)
             {
                 speed = 5f;
-                stamina += 1;
+                stamina += 1f;
                 if (stamina > MAX_STAMINA) stamina = MAX_STAMINA;
             }
             else if (stamina == 0)
@@ -261,6 +294,23 @@ public class PlayerController : PlayerVarPool
         canDash = true;
         isStunned = false;
     }
-    
-    
+
+    private IEnumerator HpRegen()
+    {
+        while (true)
+        {
+            if (health < maxHealth)
+            {
+                yield return new WaitForSeconds(2.5f);
+                while (health < maxHealth)
+                {
+                    health += Time.deltaTime;
+                    yield return new WaitForSeconds(0.02f);
+                }
+            }
+
+            yield return null;
+        }
+
+    }
 }

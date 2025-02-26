@@ -25,9 +25,9 @@ public class BasicSword : MonoBehaviour
     public AudioClip slashfx1;
     public AudioClip slashfx2;
     public AudioClip slashfx3;
-    
     public AudioClip shadowfx;
-    
+
+    public float damage;
     
     
     public string currentAttack;
@@ -43,6 +43,8 @@ public class BasicSword : MonoBehaviour
         cursorController = cursor.GetComponent<CursorController>();
         playerController = player.GetComponent<PlayerController>();
         cameraSmoother = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraSmoother>();
+
+        damage = 30f;
     }
 
     private void OnEnable()
@@ -83,7 +85,7 @@ public class BasicSword : MonoBehaviour
                 currentAttack = "BA1";
                 canAttack = false;
                 ChangeAnimationState("BA1");
-                CauseDMG(15f);
+                CauseDMG(damage /2);
                 yield return new WaitForSeconds(0.35f);
                 canAttack = true;
             }
@@ -95,7 +97,7 @@ public class BasicSword : MonoBehaviour
                 currentAttack = "BA2";
                 canAttack = false;
                 ChangeAnimationState("BA2");
-                CauseDMG(20f);
+                CauseDMG(damage * (2/3));
                 yield return new WaitForSeconds(0.4f);
                 canAttack = true;
             }
@@ -107,7 +109,7 @@ public class BasicSword : MonoBehaviour
                 currentAttack = "BA3";
                 canAttack = false;
                 ChangeAnimationState("BA3");
-                CauseDMG(25f);
+                CauseDMG(damage);
                 yield return new WaitForSeconds(0.55f);
                 canAttack = true;
             }

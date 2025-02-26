@@ -19,7 +19,6 @@ public class EnemyHealthBarModule : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(_health);
         _maxhealth = _script.maxhealth;
         _health = _script.health;
         _slider.value = _health / _maxhealth;
