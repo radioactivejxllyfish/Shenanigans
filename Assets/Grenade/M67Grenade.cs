@@ -54,17 +54,14 @@ public class M67Grenade : MonoBehaviour
 
     void Update()
     {
-        Rotation();
         ThrowArc();
+
+        spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 1 * Time.deltaTime);
+
     }
 
 
-    private void Rotation()
-    {
-        float timer = 0.0f;
-        timer += Time.deltaTime;
-        transform.rotation = Quaternion.Euler(0, 0, Mathf.LerpAngle(transform.eulerAngles.z, targetAngle, timer * rotationSpeed));
-    }
+
 
     private void DestroySprite()
     {
@@ -111,7 +108,6 @@ public class M67Grenade : MonoBehaviour
                 if (Physics2D.Raycast(transform.position, (enemy.transform.position - transform.position).normalized, range))
                 {
                     vulnerableEnemies.Add(enemy);
-                    Debug.Log(vulnerableEnemies.Count);
                 }
             }
         }

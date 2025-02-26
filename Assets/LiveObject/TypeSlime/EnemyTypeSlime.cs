@@ -11,8 +11,8 @@ public class EnemyTypeSlime : BasicEnemy
 
         isStunned = false;
         isAlive = true;
-        maxhealth = 100f;
-        health = 100f;
+        maxhealth = 450f;
+        health = 450f;
         speed = 4f;
         damage = 15f;
         rigidBody = GetComponent<Rigidbody2D>();
