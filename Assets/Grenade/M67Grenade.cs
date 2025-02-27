@@ -55,13 +55,16 @@ public class M67Grenade : MonoBehaviour
     void Update()
     {
         ThrowArc();
-
-        spriteRenderer.transform.rotation = Quaternion.Euler(0, 0, 1 * Time.deltaTime);
-
+        
     }
 
+    void FixedUpdate()
+    {
+        spriteRenderer.transform.Rotate(new Vector3(0, 0, Random.Range(-1,1)));
 
 
+
+    }
 
     private void DestroySprite()
     {
