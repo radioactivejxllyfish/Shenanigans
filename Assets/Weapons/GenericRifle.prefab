@@ -177,7 +177,7 @@ MonoBehaviour:
   isReloading: 0
   canFire: 0
   isFiring: 0
-  fireFX: {fileID: 8300000, guid: fdf6402d3931f9b4f91ed6800def77f7, type: 3}
+  fireFX: {fileID: 8300000, guid: bda50ea47d9aea340b1ab988690d5ca6, type: 3}
   reloadFX: {fileID: 8300000, guid: 3e2778e3e47df8d40b6574f53a17d767, type: 3}
 --- !u!82 &-4829501369819157530
 AudioSource:
@@ -190,7 +190,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

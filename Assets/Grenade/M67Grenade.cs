@@ -10,6 +10,7 @@ public class M67Grenade : MonoBehaviour
     public CameraSmoother cameraSmoother;
     public ParticleSystem particleSystem0;
     public SpriteRenderer spriteRenderer;
+    public AudioSource audioSource;
     
     public Ray2D ray;
     public float range;
@@ -21,7 +22,9 @@ public class M67Grenade : MonoBehaviour
     public float timeTravelled;
     public float rotationSpeed = 5f;
     public float targetAngle;
-    
+    public float radium;
+
+    public GameObject player;
     public GameObject cursor;
     public GameObject enemy;
     public List<GameObject> enemies = new List<GameObject>();
@@ -32,23 +35,26 @@ public class M67Grenade : MonoBehaviour
     
     void Start()
     {
+        player = GameObject.FindGameObjectWithTag("PlayerRB");
         rigidBody2D = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         circleCollider2D = GetComponentInChildren<CircleCollider2D>();
         cameraSmoother = Camera.main.GetComponent<CameraSmoother>();
         particleSystem0 = GetComponentInChildren<ParticleSystem>();
+        audioSource = GetComponent<AudioSource>();
         cursor = GameObject.FindGameObjectWithTag("Cursor");
         damage = 120f;
         fuse = 3f;
         travelTime = 2.4f;
-        range = 3.5f;
+        range = 4f;
         speed = 4.5f;
         
 
         positionToEnemy = (cursor.transform.position - transform.position).normalized;
         Invoke("Explode", fuse);
         Invoke("DestroySprite", fuse);
-        Destroy(gameObject, fuse + 0.5f);
+        Destroy(gameObject, fuse + 4f);
+        radium = Vector2.Distance(transform.position, cursor.transform.position);
 
     }
 
@@ -61,9 +67,6 @@ public class M67Grenade : MonoBehaviour
     void FixedUpdate()
     {
         spriteRenderer.transform.Rotate(new Vector3(0, 0, Random.Range(-1,1)));
-
-
-
     }
 
     private void DestroySprite()
@@ -72,27 +75,22 @@ public class M67Grenade : MonoBehaviour
     }
     private void ThrowArc()
     {
-        float stopDistance = 0.25f; // Distance at which it should slow down
-        float deceleration = 0.54f; // Adjust to control the smooth stop
-        float distance = Vector2.Distance(transform.position, positionToEnemy);
 
-        // Calculate remaining distance
-
-        if (distance > stopDistance)
+        float radius = Vector2.Distance(transform.position, player.transform.position);
+        if (radium > radius)
         {
-            speed = Mathf.Lerp(speed, 0, Time.deltaTime * deceleration);
-
             rigidBody2D.velocity = positionToEnemy * speed;
         }
-        else if (distance < stopDistance)
+        else if (radium <= radius)
         {
-            rigidBody2D.velocity = Vector2.zero;
+            rigidBody2D.velocity = positionToEnemy * Mathf.Lerp(speed, 0, 2f);
         }
     }
 
     private void Explode()
     {
         particleSystem0.Play();
+        audioSource.Play();
         cameraSmoother.CameraShake(0.25f, 0.08f);
         foreach (GameObject enemy in vulnerableEnemies)
         {

@@ -44,7 +44,7 @@ public class BasicRifle : MonoBehaviour
         source = GetComponent<AudioSource>();
 
         spread = 0.05f;
-        fireRate = 0.08f;
+        fireRate = 0.085f;
         ammoReserve = 120;
         magazineCapacity = 30;
 
@@ -124,7 +124,7 @@ public class BasicRifle : MonoBehaviour
         isFiring = true;
         canFire = false;
         currentAmmo -= 1;
-        Instantiate(bullet, bore.transform.position, bore.transform.rotation );
+        Instantiate(bullet, bore.transform.position, new Quaternion(bore.transform.rotation.x, bore.transform.rotation.y, bore.transform.rotation.z + Random.Range(-spread,spread), 0) );
         ChangeAnimationState("Fire");
         yield return new WaitForSeconds(fireRate);
         canFire = true;
@@ -133,7 +133,7 @@ public class BasicRifle : MonoBehaviour
 
     private IEnumerator ReloadIE()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
         source.clip = reloadFX;
         source.Play();
         canFire = false;
