@@ -11,6 +11,8 @@ TagManager:
   - Enemy
   - GameManager
   - PlayerRB
+  - Insertion
+  - DeployCamera
   layers:
   - Default
   - TransparentFX

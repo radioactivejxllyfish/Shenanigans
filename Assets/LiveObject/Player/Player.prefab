@@ -70,25 +70,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82518db20997fd34888b6ea1f82bd0b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerRb: {fileID: 8246296185265173598}
-  xAxis: 0
-  yAxis: 0
-  speed: 0
-  health: 0
-  canSprint: 1
-  movement: {x: 0, y: 0, z: 0}
-  player: {fileID: 0}
-  _dashpower: 0
-  canDash: 1
-  hasDashed: 0
-  stamina: 100
-  MAX_STAMINA: 100
-  sprinting: 0
-  isDashing: 0
-  _staminaBar: {fileID: 0}
-  animatorHandler: {fileID: 0}
-  isStunned: 0
-  ShadowStriking: 0
 --- !u!1 &237578086462519011
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +168,7 @@ GameObject:
   - component: {fileID: 8246296185265173598}
   - component: {fileID: 6288926483167429071}
   m_Layer: 8
-  m_Name: PlayerHitbox
+  m_Name: Player
   m_TagString: PlayerRB
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -340,9 +321,11 @@ MonoBehaviour:
   yAxis: 0
   speed: 0
   health: 0
+  maxHealth: 0
   canSprint: 1
   movement: {x: 0, y: 0, z: 0}
   player: {fileID: 0}
+  cursor: {fileID: 0}
   _dashpower: 0
   canDash: 1
   hasDashed: 0
@@ -351,9 +334,15 @@ MonoBehaviour:
   sprinting: 0
   isDashing: 0
   _staminaBar: {fileID: 0}
+  healthBar: {fileID: 0}
   animatorHandler: {fileID: 429253944987693583}
+  _cursorController: {fileID: 0}
   isStunned: 0
   ShadowStriking: 0
+  dashDir: LeftF
+  walkDir: LeftF
+  grenade: {fileID: 0}
+  grenadeCount: 0
 --- !u!1 &1107680357987493265
 GameObject:
   m_ObjectHideFlags: 0
