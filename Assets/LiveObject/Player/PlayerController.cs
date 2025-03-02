@@ -44,8 +44,8 @@ public class PlayerController : PlayerVarPool
     private void Update()
     {
         MovementInput();
-        _staminaBar.value = stamina / MAX_STAMINA;
-        healthBar.value = health / maxHealth;
+        // _staminaBar.value = stamina / MAX_STAMINA;
+        // healthBar.value = health / maxHealth;
         Dash();
         Move();
         OnDeath();
@@ -311,6 +311,5 @@ public class PlayerController : PlayerVarPool
 
             yield return null;
         }
-
     }
 }

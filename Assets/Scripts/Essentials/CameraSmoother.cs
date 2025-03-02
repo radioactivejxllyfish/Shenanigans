@@ -4,10 +4,12 @@ using UnityEngine;
 public class CameraSmoother : MonoBehaviour
 {
     private GameObject _player;
-    
+    private Camera _camera;
     
     void Start()
     {
+        _camera = GetComponent<Camera>();
+        _camera = Camera.main;
         _player = GameObject.FindGameObjectWithTag("PlayerRB");
     }
 

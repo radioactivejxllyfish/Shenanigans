@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class DeployCamera : MonoBehaviour
 {
-    private GameObject cursor;
     public GameObject insertion;
     public Vector3 deployPosition;
     public Vector3 insertionPoint;
@@ -16,24 +15,36 @@ public class DeployCamera : MonoBehaviour
     void Start()
     {
         insertionPoint = new Vector3(Random.Range(-30,30),Random.Range(90,250));
-        cursor = GameObject.FindGameObjectWithTag("Cursor");
         hasChosenSpawnPoint0 = false;
     }
 
     void FixedUpdate()
     {
+        Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         LandCheck();
         if (!hasChosenSpawnPoint0)
         {
-            Vector3 targetPos = new Vector3(cursor.transform.position.x, cursor.transform.position.y, -4f);
-            transform.position = Vector3.Lerp(transform.position, targetPos, 0.1f);
+            transform.position = new Vector3(target.x * 0.75f, target.y * 0.75f, -4f);
         }
         else if (hasChosenSpawnPoint0 && bishop!= null)
         {
             transform.position = new Vector3(bishop.transform.position.x, bishop.transform.position.y, -4f);
         }
         ChoseSpawn();
-        Debug.Log(bishop);
+    }
+    
+    public IEnumerator Shake(float intensity, float duration)
+    {
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-1f,1f) * intensity;
+            float y = Random.Range(-1f,1f) * intensity;
+
+            transform.position = transform.position + new Vector3(x, y, 0);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
     }
 
     void ChoseSpawn()
@@ -42,6 +53,7 @@ public class DeployCamera : MonoBehaviour
         {
             deployPosition = transform.position;
             hasChosenSpawnpoint = true;
+            StartCoroutine(Shake(0.1f, 15f));
 
             StartCoroutine(DeploySequence());
         }
@@ -49,12 +61,14 @@ public class DeployCamera : MonoBehaviour
 
     void LandCheck()
     {
+        
         if (bishop != null && insertionHellpod != null)
         {
             if (insertionHellpod.hasLanded)
             {
                 Destroy(gameObject);
             }
+
         }
 
     }

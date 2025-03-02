@@ -42,8 +42,7 @@ public class BasicSword : MonoBehaviour
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         cursorController = cursor.GetComponent<CursorController>();
         playerController = player.GetComponent<PlayerController>();
-        cameraSmoother = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraSmoother>();
-
+        StartCoroutine(Init());
         damage = 30f;
     }
 
@@ -165,6 +164,12 @@ public class BasicSword : MonoBehaviour
             audioFX.Play();
 
         }
+    }
+
+    private IEnumerator Init()
+    {        
+        yield return new WaitForSeconds(0.5f);
+        cameraSmoother = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraSmoother>();
     }
     
 

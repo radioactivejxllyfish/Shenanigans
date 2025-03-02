@@ -17,21 +17,23 @@ public class InsertionHellpod : MonoBehaviour
     public Vector3 velocity;
     public float speed;
     public float aoeDamage;
-
+    public bool hasDeployedPlayer = false;
     public bool hasLanded;
+
+
+    private string currentState;
     
     
     public void Start()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        particleSystem0 = GetComponent<ParticleSystem>();
+        animator = GetComponentInChildren<Animator>();
+        particleSystem0 = GetComponentInChildren<ParticleSystem>();
         audioSource = GetComponent<AudioSource>();
         circleCollider = GetComponent<CircleCollider2D>();
-
-        speed = 12f;
+    
+        speed = 25f;
         aoeDamage = 300f;
-        StartCoroutine(Launch());
     }
 
     void Update()
@@ -44,34 +46,70 @@ public class InsertionHellpod : MonoBehaviour
     {
         float height = Vector2.Distance(landingSpot, transform.position);
         velocity = (landingSpot - transform.position).normalized * speed;
-        transform.eulerAngles = (transform.position - landingSpot).normalized;
+        transform.up = -velocity.normalized;
         if (height > 3f)
         {
+            ChangeAnimationState("Deploy");
             rigidBody2D.velocity = velocity;
 
         }
-        else if (height <= 2f)
+        else if (height <= 1f)
         {
+            ChangeAnimationState("Landed");
             rigidBody2D.velocity = Vector2.zero;
-            hasLanded = true;
-            StartCoroutine(DeployPlayer());
+            if (!hasDeployedPlayer)
+            {
+                StartCoroutine(DeployPlayer());
+                hasDeployedPlayer = true;
+            }
+            
+        }
+
+    }
+    
+
+    private IEnumerator DeployPlayer()
+    {
+        spriteRenderer.sprite = landed;
+        particleSystem0.Play();
+        yield return new WaitForSeconds(1f);
+        Instantiate(player, transform.position, Quaternion.Euler(0,0,0));
+        hasLanded = true;
+    }
+    
+    
+    public void ChangeAnimationState(string newState)
+    {
+        // stop the animation from interrupting itself
+        if (currentState == newState) return;
+        // play animation
+        animator.Play(newState); 
+        // reassign current state   
+        currentState = newState;
+        
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        GameObject enemy;
+        List<GameObject> enemies = new List<GameObject>();
+        if (collider !=null)
+        {
+            if (collider.gameObject.CompareTag("Enemy"))
+            {
+                enemy = collider.gameObject;
+                enemies.Add(enemy);
+            }
+        }
+
+        if (!hasLanded)
+        {
+            foreach (GameObject enemyObj in enemies)
+            {
+                enemyObj.gameObject.GetComponent<BasicEnemy>().TakeDamage(aoeDamage);
+            }
         }
 
     }
 
-
-    private IEnumerator Launch()
-    {
-        yield return new WaitForSeconds(2.5f);
-        animator.Play("Deploy");
-    }
-
-    private IEnumerator DeployPlayer()
-    {
-        yield return new WaitForSeconds(1f);
-        Instantiate(player, transform.position, transform.rotation);
-        spriteRenderer.sprite = landed;
-        spriteRenderer.sortingLayerID = -6;
-    }
-    
 }

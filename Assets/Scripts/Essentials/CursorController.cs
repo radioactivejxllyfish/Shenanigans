@@ -10,14 +10,24 @@ public class CursorController : MonoBehaviour
     public Vector3 cursorposition;
     void Start()
     {
-        _camera = Camera.main;
+
         _player = GameObject.FindGameObjectWithTag("PlayerRB");
     }
 
     void Update()
     {
+        if (_camera == null)
+        {
+            _camera = Camera.main;
+        }
         if (_player != null)
         {
+            bool camReset = false;
+            if (!camReset)
+            {
+                transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                camReset = true;
+            }
             Vector3 direction = (transform.position - _player.transform.position).normalized;
             Vector3 campos = _camera.ScreenToWorldPoint(Input.mousePosition);
             transform.position = new Vector3(campos.x, campos.y, 0);
