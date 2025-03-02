@@ -46,4 +46,9 @@
 +Reworked default melee  
 +Reworked default ranged  
 
+# 0.0.5 [3/2/2025]  
++Added stats multiplier  
++Added Liquidator's ultility(m67 grenade)  
++Added Insertion: Hellpod  
++Liquidator is now finished
 
