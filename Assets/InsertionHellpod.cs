@@ -19,6 +19,7 @@ public class InsertionHellpod : MonoBehaviour
     public float aoeDamage;
     public bool hasDeployedPlayer = false;
     public bool hasLanded;
+    public float height;
 
 
     private string currentState;
@@ -44,7 +45,7 @@ public class InsertionHellpod : MonoBehaviour
 
     private void Transformer()
     {
-        float height = Vector2.Distance(landingSpot, transform.position);
+        height = Vector2.Distance(landingSpot, transform.position);
         velocity = (landingSpot - transform.position).normalized * speed;
         transform.up = -velocity.normalized;
         if (height > 3f)
@@ -102,7 +103,7 @@ public class InsertionHellpod : MonoBehaviour
             }
         }
 
-        if (!hasLanded)
+        if (!hasLanded && height <= 7f)
         {
             foreach (GameObject enemyObj in enemies)
             {
