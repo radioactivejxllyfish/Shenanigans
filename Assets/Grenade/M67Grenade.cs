@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor;
 using UnityEngine;
 
 public class M67Grenade : MonoBehaviour
@@ -109,6 +110,7 @@ public class M67Grenade : MonoBehaviour
                 if (Physics2D.Raycast(transform.position, (enemy.transform.position - transform.position).normalized, range))
                 {
                     vulnerableEnemies.Add(enemy);
+                    Gizmos.DrawRay(transform.position, (enemy.transform.position - transform.position).normalized);
                 }
             }
         }

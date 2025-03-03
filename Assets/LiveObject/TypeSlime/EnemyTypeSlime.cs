@@ -3,9 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class EnemyTypeSlime : BasicEnemy
 {
+
+    private bool _hasLineOfSight = false;
+    private bool _isRoaming = false;
+    
     void Start()
     {
 
@@ -15,6 +20,9 @@ public class EnemyTypeSlime : BasicEnemy
         health = 150f;
         speed = 4f;
         damage = 15f;
+        
+        
+        
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         sight = GetComponentInChildren<CircleCollider2D>();
@@ -24,6 +32,7 @@ public class EnemyTypeSlime : BasicEnemy
 
     void Update()
     {
+        LOSCheck();
         Movement();
         Mathf.Clamp(health, 0f, maxhealth);
         DeathHandler();
@@ -40,19 +49,82 @@ public class EnemyTypeSlime : BasicEnemy
 
     private void Movement()
     {
-        if (player != null)
+        
+        float chance = Random.Range(0f, 1f);
+        if (player != null && _hasLineOfSight)
         {
+            _isRoaming = false;
             direction = (player.transform.position - transform.position).normalized;
             rigidBody.velocity = direction * speed;
         }
-        else
+        else if (player == null && chance > 0.0125f && _isRoaming == false && !_hasLineOfSight)
         {
             direction = Vector2.zero;
             rigidBody.velocity = Vector2.zero;
         }
+        else if (chance <= 0.0125f && _isRoaming == false && !_hasLineOfSight)
+        {
+            StartCoroutine(Roaming());
+            Debug.Log("Roam");
+        }
         
     }
 
+
+    private void LOSCheck()
+    {
+        if (player != null)
+        {
+            RaycastHit2D ray = Physics2D.Raycast(transform.position,(player.transform.position - transform.position).normalized);
+            if (ray.collider != null)
+                {
+                    if (ray.collider.CompareTag("PlayerRB"))
+                    {
+                        Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized);
+                        _hasLineOfSight = true;
+                    }
+                    else
+                    {
+                        _hasLineOfSight = false;
+                    }
+                }
+        }
+    }
+
+
+
+    private IEnumerator Roaming()
+    {
+        float elapsed = 0.0f;
+        float random = Random.Range(0f, 360f);
+        Vector2 heading = new Vector2(Mathf.Cos(random), Mathf.Sin(random));
+        RaycastHit2D ray = Physics2D.Raycast(transform.position, heading);
+        if (ray.collider != null)
+        {
+            if (!ray.collider.CompareTag("PlayerRB"))
+            {
+                heading = new Vector2(Mathf.Cos(random), Mathf.Sin(random));
+            }
+        }
+        _isRoaming = true;
+        float duration = Random.Range(0.3f, 3f);
+        if (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            if (ray.collider != null)
+            {
+                if (!ray.collider.CompareTag("PlayerRB"))
+                {
+                    heading = new Vector2(-heading.x, -heading.y);
+                }
+            }
+            rigidBody.velocity = heading * 2f;
+
+        }
+        Debug.Log("Roaming");
+        yield return new WaitForSeconds(Random.Range(2f, 6f));
+        _isRoaming = false;
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {

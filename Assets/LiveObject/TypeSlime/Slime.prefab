@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6715484034517276974}
   - component: {fileID: 3008215975773354069}
   - component: {fileID: 3411368992289562155}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: HealthBarModule
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ GameObject:
   - component: {fileID: 5989423926062946241}
   - component: {fileID: 3213133055919839155}
   - component: {fileID: 2898170849566248657}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -151,7 +151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8242523187763293347}
   - component: {fileID: 1099548622166268659}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Healthbar
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -239,7 +239,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2278224258472047305}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 599104875632358790}
   - component: {fileID: 7835135559206548238}
   - component: {fileID: 6253151120274362827}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,7 +346,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8545100529690590445}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,7 +383,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1710987289099796773}
   - component: {fileID: 4176372562672076275}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: Renderer
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -469,7 +469,7 @@ GameObject:
   - component: {fileID: 4294370146760660390}
   - component: {fileID: 636266173533446712}
   - component: {fileID: 5097996017833319946}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -572,7 +572,7 @@ GameObject:
   - component: {fileID: 5389863539263747047}
   - component: {fileID: 5947689583490476430}
   - component: {fileID: 6159891369690296275}
-  m_Layer: 7
+  m_Layer: 2
   m_Name: SlimeEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}

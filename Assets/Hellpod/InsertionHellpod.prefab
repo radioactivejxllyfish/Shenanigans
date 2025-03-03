@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4805650805748347232}
   - component: {fileID: 3766815231769725859}
   - component: {fileID: 3038175158260143119}
-  m_Layer: 9
+  m_Layer: 2
   m_Name: InsertionHellpod
   m_TagString: Insertion
   m_Icon: {fileID: 0}
@@ -89,6 +89,7 @@ MonoBehaviour:
   aoeDamage: 0
   hasDeployedPlayer: 0
   hasLanded: 0
+  height: 0
 --- !u!95 &3766815231769725859
 Animator:
   serializedVersion: 5
@@ -155,7 +156,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6495471584419448206}
   - component: {fileID: 6864490916348220301}
-  m_Layer: 9
+  m_Layer: 2
   m_Name: WingR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -242,7 +243,7 @@ GameObject:
   - component: {fileID: 5992755585363841579}
   - component: {fileID: 7664116067200092414}
   - component: {fileID: 1711095986558446641}
-  m_Layer: 9
+  m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5204,7 +5205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4102345626809364576}
   - component: {fileID: 3264091963588843241}
-  m_Layer: 9
+  m_Layer: 2
   m_Name: WingL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
