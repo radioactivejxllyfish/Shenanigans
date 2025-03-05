@@ -1,15 +1,17 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class EnemyTypeSlime : BasicEnemy
+public class EnemyTypeExplosive : BasicEnemy
 {
 
+    private bool hasFoundCamera = false;
     private bool _hasLineOfSight = false;
     private bool _isRoaming = false;
+    private bool _exploding = false;
+    private CameraSmoother _cameraSmoother;
+    
+    
     
     void Start()
     {
@@ -19,19 +21,33 @@ public class EnemyTypeSlime : BasicEnemy
         maxhealth = 150f;
         health = 150f;
         speed = 4f;
-        damage = 15f;
-        
-        
-        
+        damage = 120f;
+
+    
+        _cameraSmoother = Camera.main.GetComponent<CameraSmoother>();
+        if (_cameraSmoother == null)
+        {
+            hasFoundCamera = false;
+        }
         rigidBody = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
         sight = GetComponentInChildren<CircleCollider2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
+
+        StartCoroutine(Explosive());
     }
 
     void Update()
     {
+        if (!hasFoundCamera)
+        {
+            _cameraSmoother = Camera.main.GetComponent<CameraSmoother>();
+            if (_cameraSmoother != null)
+            {
+                hasFoundCamera = true;
+            }
+        }
         LOSCheck();
         Movement();
         Mathf.Clamp(health, 0f, maxhealth);
@@ -43,7 +59,7 @@ public class EnemyTypeSlime : BasicEnemy
     {
         if (health <= 0f)
         {
-            Destroy(this.transform.parent.gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -51,20 +67,21 @@ public class EnemyTypeSlime : BasicEnemy
     {
         
         float chance = Random.Range(0f, 1f);
-        if (player != null && _hasLineOfSight)
+        if (player != null && _hasLineOfSight && !_exploding)
         {
             _isRoaming = false;
             direction = (player.transform.position - transform.position).normalized;
             rigidBody.velocity = direction * speed;
         }
-        else if (player == null && chance > 0.0125f && _isRoaming == false && !_hasLineOfSight)
+        else if (player == null && chance > 0.0125f && _isRoaming == false && !_hasLineOfSight && !_exploding)
         {
             direction = Vector2.zero;
             rigidBody.velocity = Vector2.zero;
         }
-        else if (chance <= 0.0125f && _isRoaming == false && !_hasLineOfSight)
+        else if (chance <= 0.0125f && _isRoaming == false && !_hasLineOfSight && !_exploding)
         {
             StartCoroutine(Roaming());
+            Debug.Log("Roam");
         }
         
     }
@@ -132,6 +149,7 @@ public class EnemyTypeSlime : BasicEnemy
             if (other.gameObject.CompareTag("PlayerRB"))
             {
                 player = other.gameObject;
+                Debug.Log("Player Entered");
             }
         }
     }
@@ -143,7 +161,32 @@ public class EnemyTypeSlime : BasicEnemy
             if (collider.gameObject.CompareTag("PlayerRB"))
             {
                 player = null;
+                Debug.Log("Player Exited");
             }
         }
+    }
+
+    private IEnumerator Explosive()
+    {
+        while (true)
+        {
+            if (player != null && Vector2.Distance(player.transform.position, transform.position)  < 2f)
+            {
+                _exploding = true;
+                direction = Vector2.zero;
+                rigidBody.velocity = Vector2.zero;
+                yield return new WaitForSeconds(2f);
+                if (Vector2.Distance(player.transform.position, transform.position) < 3f)
+                {
+                    player.GetComponent<PlayerVarPool>().TakeDamage(damage);
+                    _cameraSmoother.Shake(0.15f, 0.05f);
+                }
+
+            }
+            yield return null;
+
+        }
+
+
     }
 }

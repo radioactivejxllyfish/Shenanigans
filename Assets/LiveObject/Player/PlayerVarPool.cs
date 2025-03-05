@@ -14,6 +14,11 @@ public abstract class PlayerVarPool : MonoBehaviour
     public GameObject cursor;
 
 
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+    }
     
 
 }

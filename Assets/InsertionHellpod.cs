@@ -63,9 +63,7 @@ public class InsertionHellpod : MonoBehaviour
                 StartCoroutine(DeployPlayer());
                 hasDeployedPlayer = true;
             }
-            
         }
-
     }
     
 

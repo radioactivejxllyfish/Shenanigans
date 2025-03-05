@@ -24,7 +24,9 @@ public class DeployCamera : MonoBehaviour
         LandCheck();
         if (!hasChosenSpawnPoint0)
         {
-            transform.position = new Vector3(target.x * 0.75f, target.y * 0.75f, -4f);
+            Vector3 unLerp  = new Vector3(target.x, target.y, -4f);
+            transform.position = Vector3.Lerp(transform.position, unLerp, 0.1f);
+
         }
         else if (hasChosenSpawnPoint0 && bishop!= null)
         {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class PlayerController : PlayerVarPool
 {
@@ -14,31 +15,45 @@ public class PlayerController : PlayerVarPool
     public float MAX_STAMINA = 100;
     public bool sprinting;
     public bool isDashing = false;
-    public Slider _staminaBar;
-    public Slider healthBar;
-    public PlayerAnimationHandler animatorHandler;
-    public CursorController _cursorController;
+    public bool isMoving;
     public bool isStunned = false;
     public bool ShadowStriking;
     public string dashDir = "LeftF";
     public string walkDir = "LeftF";
 
-
+    public Slider _staminaBar;
+    public Slider healthBar;
+    public PlayerAnimationHandler animatorHandler;
+    public CursorController _cursorController;
+    public AudioSource source;
     public GameObject grenade;
+
+
+
+
+    public AudioClip walk1;
+    public AudioClip walk2;
+    public AudioClip walk3;
+    public AudioClip dash;
+
     public int grenadeCount;
     private void Start()
     {
+        source = GetComponent<AudioSource>();
         cursor = GameObject.FindGameObjectWithTag("Cursor");
         _cursorController = cursor.GetComponent<CursorController>();
         playerRb = GetComponent<Rigidbody2D>();
+        
+        hasDashed = false;
+        grenadeCount = 3;
         _dashpower = 8f;
         speed = 5f;
         maxHealth = 100f;
         health = maxHealth;
+        
         StartCoroutine("Sprint");
         StartCoroutine("HpRegen");
-        hasDashed = false;
-        grenadeCount = 3;
+        StartCoroutine(WalkSound());
     }
     
     private void Update()
@@ -50,6 +65,8 @@ public class PlayerController : PlayerVarPool
         Move();
         OnDeath();
         ThrowGrenade();
+        
+        
     }
 
 
@@ -74,7 +91,6 @@ public class PlayerController : PlayerVarPool
 
         if (Input.GetKeyDown(KeyCode.Space) && !hasDashed && stamina >= 35 && canDash && !isStunned && !ShadowStriking && movement != Vector3.zero)
         {
-
             StartCoroutine("Dash");
         }
     }
@@ -89,6 +105,7 @@ public class PlayerController : PlayerVarPool
         movement = new Vector2(xAxis, yAxis);
         if (isStunned || ShadowStriking)
         {
+            source.Stop();
             playerRb.velocity = Vector2.zero;
         }
         else
@@ -169,11 +186,7 @@ public class PlayerController : PlayerVarPool
         
     }
 
-
-    public void TakeDamage(float damage)
-    {
-        health -= damage;
-    }
+    
 
     public void OnDeath()
     {
@@ -245,12 +258,14 @@ public class PlayerController : PlayerVarPool
                 speed = 9f;
                 stamina -= 2f;
                 if (stamina < 0) stamina = 0;
+                yield return null;
             }
             else if (!sprinting)
             {
                 speed = 5f;
                 stamina += 1f;
                 if (stamina > MAX_STAMINA) stamina = MAX_STAMINA;
+                yield return null;
             }
             else if (stamina == 0)
             {
@@ -266,6 +281,7 @@ public class PlayerController : PlayerVarPool
             yield return new WaitForSeconds(0.1f);
         }
 
+        yield return null;
     }
 
     private void StunTrigger()
@@ -295,6 +311,34 @@ public class PlayerController : PlayerVarPool
         isStunned = false;
     }
 
+
+    private IEnumerator WalkSound()
+    {
+        while (true)
+        {
+            if (isMoving)
+            {
+                int walkSound = Random.Range(1, 4);
+                if (walkSound == 1)
+                {
+                    source.clip = walk1;
+                }
+                else if (walkSound == 2)
+                {
+                    source.clip = walk2;
+                }
+                else if (walkSound == 3)
+                {
+                    source.clip = walk3;
+                }
+                source.Play();
+                yield return new WaitForSeconds(Random.Range(0.4f, 0.6f));
+            }
+            yield return null;
+        }
+    }
+    
+
     private IEnumerator HpRegen()
     {
         while (true)
@@ -308,7 +352,6 @@ public class PlayerController : PlayerVarPool
                     yield return new WaitForSeconds(0.02f);
                 }
             }
-
             yield return null;
         }
     }

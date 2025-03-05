@@ -138,7 +138,11 @@ public class BasicSword : MonoBehaviour
         {
             foreach (GameObject _enemy in enemies)
             {
-                _enemy.GetComponent<BasicEnemy>().TakeDamage(dmg);
+                if (_enemy != null)
+                {
+                    _enemy.GetComponent<BasicEnemy>().TakeDamage(dmg);
+
+                }
             }
         }
     }
