@@ -20,7 +20,7 @@ public class BasicEnemy : MonoBehaviour
     public Rigidbody2D rigidBody;
     public CircleCollider2D sight;
     public SpriteRenderer spriteRenderer;
-    public ParticleSystem bloodSplatter;
+    public GameObject bloodSplatter;
     
     
 
@@ -49,7 +49,7 @@ public class BasicEnemy : MonoBehaviour
 
     public IEnumerator StunPeek()
     {
-        rigidBody.transform.rotation = Quaternion.Euler(0,0, Random.Range(-20f, 20f));
+        rigidBody.transform.rotation = Quaternion.Euler(0,0, Random.Range(-5f, 5f));
         yield return new WaitForSeconds(0.25f);
         rigidBody.transform.rotation = Quaternion.Euler(0,0, 0);
         yield return null;

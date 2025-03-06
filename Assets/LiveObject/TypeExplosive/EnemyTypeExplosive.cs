@@ -9,8 +9,21 @@ public class EnemyTypeExplosive : BasicEnemy
     private bool _hasLineOfSight = false;
     private bool _isRoaming = false;
     private bool _exploding = false;
+    private bool _isDead = false;
     private CameraSmoother _cameraSmoother;
-    
+
+
+
+    [SerializeField] private Sprite _roaming;
+    [SerializeField] private Sprite _chasing;
+    [SerializeField] private Sprite _exploding1;
+    [SerializeField] private Sprite _exploding2;
+    [SerializeField] private Sprite _exploded;
+
+
+    public GameObject bloodSplatter;
+    public ParticleSystem explosiveParticles;
+
     
     
     void Start()
@@ -59,27 +72,46 @@ public class EnemyTypeExplosive : BasicEnemy
     {
         if (health <= 0f)
         {
-            Destroy(gameObject);
+            rigidBody.velocity = Vector2.zero;
+            _isDead = true;
+            Destroy(gameObject, 7f);
         }
     }
 
     private void Movement()
     {
-        
-        float chance = Random.Range(0f, 1f);
-        if (player != null && _hasLineOfSight && !_exploding)
+        if (rigidBody.velocity.x > 0)
         {
+            spriteRenderer.flipX = false;
+        }
+        else if (rigidBody.velocity.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            
+        }
+        float chance = Random.Range(0f, 1f);
+        if (player != null && _hasLineOfSight && !_exploding && !_isDead)
+        {
+            spriteRenderer.sprite = _chasing;
+
             _isRoaming = false;
             direction = (player.transform.position - transform.position).normalized;
             rigidBody.velocity = direction * speed;
         }
-        else if (player == null && chance > 0.0125f && _isRoaming == false && !_hasLineOfSight && !_exploding)
+        else if (player == null && chance > 0.0125f && _isRoaming == false && !_hasLineOfSight && !_exploding && !_isDead)
         {
+            spriteRenderer.sprite = _roaming;
+
             direction = Vector2.zero;
             rigidBody.velocity = Vector2.zero;
         }
-        else if (chance <= 0.0125f && _isRoaming == false && !_hasLineOfSight && !_exploding)
+        else if (chance <= 0.0125f && _isRoaming == false && !_hasLineOfSight && !_exploding && !_isDead)
         {
+            spriteRenderer.sprite = _roaming;
+
             StartCoroutine(Roaming());
             Debug.Log("Roam");
         }
@@ -170,17 +202,60 @@ public class EnemyTypeExplosive : BasicEnemy
     {
         while (true)
         {
-            if (player != null && Vector2.Distance(player.transform.position, transform.position)  < 2f)
+            if (player != null && Vector2.Distance(player.transform.position, transform.position)  < 2.5f &&!_isDead)
             {
+                spriteRenderer.sprite = _chasing;
                 _exploding = true;
                 direction = Vector2.zero;
                 rigidBody.velocity = Vector2.zero;
-                yield return new WaitForSeconds(2f);
-                if (Vector2.Distance(player.transform.position, transform.position) < 3f)
-                {
-                    player.GetComponent<PlayerVarPool>().TakeDamage(damage);
-                    _cameraSmoother.Shake(0.15f, 0.05f);
+                yield return new WaitForSeconds(0.5f);
+                if (Vector2.Distance(player.transform.position, transform.position) < 2.5f)
+                {                    
+                    rigidBody.velocity = Vector2.zero;
+                    yield return new WaitForSeconds(0.08f);
+                    spriteRenderer.sprite = _exploding1;
+                    yield return new WaitForSeconds(0.08f);
+                    spriteRenderer.sprite = _exploding2;
+                    yield return new WaitForSeconds(0.08f);
+                    spriteRenderer.sprite = _exploding1;
+                    yield return new WaitForSeconds(0.08f);
+                    spriteRenderer.sprite = _exploding2;
+                    yield return new WaitForSeconds(0.08f);
+                    spriteRenderer.sprite = _exploding1;
+                    yield return new WaitForSeconds(0.08f);
+                    spriteRenderer.sprite = _exploding2;
+                    yield return new WaitForSeconds(0.3f);
+
+                    explosiveParticles.Play();
+                    if (Vector2.Distance(player.transform.position, transform.position) < 3f)
+                    {
+                        player.GetComponent<PlayerVarPool>().TakeDamage(damage);
+                        _cameraSmoother.CameraShake(0.2f, 0.25f);
+                        spriteRenderer.sprite = _exploded;
+                        health = 0f;
+                        Destroy(gameObject, 7f);
+                        rigidBody.velocity = Vector2.zero;
+                        yield return new WaitForSeconds(99f);
+                    }
+                    else
+                    {
+                        _cameraSmoother.CameraShake(0.15f, 0.08f);
+                        spriteRenderer.sprite = _exploded;
+                        health = 0f;
+                        Destroy(gameObject, 7f);
+                        rigidBody.velocity = Vector2.zero;
+                        yield return new WaitForSeconds(99f);
+                    }
+
                 }
+                else
+                {
+                    spriteRenderer.sprite = _roaming;
+                    _exploding = false;
+                    yield return null;
+                }
+
+                yield return null;
 
             }
             yield return null;

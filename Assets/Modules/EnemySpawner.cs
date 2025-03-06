@@ -17,7 +17,7 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         radius = 12f;
-        time = Random.Range(3f, 15f);
+        time = Random.Range(2f, 8f);
         position = new Vector3(Random.Range(-radius, radius), Random.Range(-radius, radius), 0f);
     }
 
