@@ -90,14 +90,13 @@ MonoBehaviour:
   rigidBody: {fileID: 0}
   sight: {fileID: 0}
   spriteRenderer: {fileID: 0}
-  bloodSplatter: {fileID: 0}
   _roaming: {fileID: 21300000, guid: 79368d1a5489ba2439b53bd0d4457c02, type: 3}
   _chasing: {fileID: 21300000, guid: 1470f0c4e166a80409a39f05122a6ac2, type: 3}
   _exploding1: {fileID: 21300000, guid: 55e6d0213292b5f40a4ab474df9eef5c, type: 3}
   _exploding2: {fileID: 21300000, guid: fbf027c781728ee4397f055bf0f58e94, type: 3}
   _exploded: {fileID: 21300000, guid: f1912aa97a076f24c912270e53254644, type: 3}
+  _destroyed: {fileID: 21300000, guid: b66a28d827b6e954c894ca9a5bfd4290, type: 3}
   explosiveParticles: {fileID: 9033127131122866866}
-  HitParticles: {fileID: 0}
 --- !u!114 &2521237037910601650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,7 +121,6 @@ MonoBehaviour:
   rigidBody: {fileID: 0}
   sight: {fileID: 0}
   spriteRenderer: {fileID: 0}
-  bloodSplatter: {fileID: 2321949701049910151, guid: 05adce4efc8b1284cab12220179bbac1, type: 3}
 --- !u!58 &1495808065391278532
 CircleCollider2D:
   m_ObjectHideFlags: 0

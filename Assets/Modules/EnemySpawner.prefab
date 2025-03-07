@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1055c725fea4f33478d748b6b79d0676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyType1: {fileID: 8924907931038012210, guid: 532bc224390765149be8df41b80be4c1, type: 3}
-  _enemyType2: {fileID: 8924907931038012210, guid: 532bc224390765149be8df41b80be4c1, type: 3}
+  _enemyType1: {fileID: 553358100635258413, guid: e4fefddf67314b74c9562ff11efe9328, type: 3}
+  _enemyType2: {fileID: 553358100635258413, guid: e4fefddf67314b74c9562ff11efe9328, type: 3}
   radius: 0
   time: 0
   position: {x: 0, y: 0, z: 0}

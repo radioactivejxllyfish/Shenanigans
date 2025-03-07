@@ -82,6 +82,7 @@ MonoBehaviour:
   particleSystem0: {fileID: 0}
   audioSource: {fileID: 0}
   circleCollider: {fileID: 0}
+  LZ: {fileID: 4074990393561017627, guid: a2e6debe2b2cc754490627cb9054cc31, type: 3}
   landed: {fileID: 21300000, guid: 3e6739ed5fabd9548a9475d4606605df, type: 3}
   landingSpot: {x: 0, y: 0, z: 0}
   velocity: {x: 0, y: 0, z: 0}

@@ -57,23 +57,27 @@ public class BasicRifle : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Fire1();
-        Transformer();
-        if (!isFiring && !isReloading)
+        if (player != null)
         {
-            if (idleStyle == 4)
+            Fire1();
+            Transformer();
+            if (!isFiring && !isReloading)
             {
-                ChangeAnimationState("Idle");
-            }
-            else if (idleStyle == 5)
-            {
-                ChangeAnimationState("Idle2");
-            }
-            else
-            {
-                ChangeAnimationState("IdleDefault");
+                if (idleStyle == 4)
+                {
+                    ChangeAnimationState("Idle");
+                }
+                else if (idleStyle == 5)
+                {
+                    ChangeAnimationState("Idle2");
+                }
+                else
+                {
+                    ChangeAnimationState("IdleDefault");
+                }
             }
         }
+
     }
 
     private void Fire1()

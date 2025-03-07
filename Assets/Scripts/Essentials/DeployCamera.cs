@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Vector2 = System.Numerics.Vector2;
 
 public class DeployCamera : MonoBehaviour
 {
@@ -8,25 +9,49 @@ public class DeployCamera : MonoBehaviour
     public Vector3 insertionPoint;
     public GameObject bishop;
     public InsertionHellpod insertionHellpod;
+    public GameObject LZpref;
+    public GameObject LZ;
 
+    
+    public float moveSpeed = 5f;
+    public float lerpSpeed = 10f;
+    private Vector3 targetPosition;
+    private bool moving = false;
+    
     private bool hasChosenSpawnPoint0;
     private bool hasChosenSpawnpoint = false;
     
     void Start()
     {
+
         insertionPoint = new Vector3(Random.Range(-30,30),Random.Range(90,250));
         hasChosenSpawnPoint0 = false;
+         LZ = Instantiate(LZpref, transform.position, transform.rotation);
     }
 
     void FixedUpdate()
     {
-        Vector3 target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         LandCheck();
         if (!hasChosenSpawnPoint0)
         {
-            Vector3 unLerp  = new Vector3(target.x, target.y, -4f);
-            transform.position = Vector3.Lerp(transform.position, unLerp, 0.1f);
+            if (Input.GetMouseButtonDown(0)) // Left-click sets the target
+            {
+                targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                targetPosition.z = transform.position.z; // Keep the camera's Z position
+                moving = true;
+            }
 
+            if (moving)
+            {
+                transform.position = Vector3.Lerp(transform.position, targetPosition, lerpSpeed * Time.deltaTime);
+
+                // Stop moving when close enough
+                if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+                {
+                    transform.position = targetPosition;
+                    moving = false;
+                }
+            }
         }
         else if (hasChosenSpawnPoint0 && bishop!= null)
         {
@@ -34,6 +59,7 @@ public class DeployCamera : MonoBehaviour
         }
         ChoseSpawn();
     }
+
     
     public IEnumerator Shake(float intensity, float duration)
     {
@@ -43,7 +69,7 @@ public class DeployCamera : MonoBehaviour
             float x = Random.Range(-1f,1f) * intensity;
             float y = Random.Range(-1f,1f) * intensity;
 
-            transform.position = transform.position + new Vector3(x, y, 0);
+            transform.position += new Vector3(x, y, 0);
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -53,7 +79,7 @@ public class DeployCamera : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && !hasChosenSpawnpoint)
         {
-            deployPosition = transform.position;
+            deployPosition = LZ.transform.position;
             hasChosenSpawnpoint = true;
             StartCoroutine(Shake(0.1f, 15f));
 

@@ -29,13 +29,13 @@ public class BasicSword : MonoBehaviour
 
     public float damage;
     
-    
-    public string currentAttack;
     public bool canAttack = true;
+    public string currentAttack;
     public string currentState;
     
     void Start()
     {
+        cameraSmoother = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraSmoother>();
         player = GameObject.FindGameObjectWithTag("PlayerRB");
         polygonCollider = GetComponentInChildren<PolygonCollider2D>();
         cursor = GameObject.FindGameObjectWithTag("Cursor");
@@ -80,7 +80,6 @@ public class BasicSword : MonoBehaviour
             {
                 SlashFX();
 
-                Debug.Log("BA1");
                 currentAttack = "BA1";
                 canAttack = false;
                 ChangeAnimationState("BA1");
@@ -92,7 +91,6 @@ public class BasicSword : MonoBehaviour
             {
                 SlashFX();
 
-                Debug.Log("BA2");
                 currentAttack = "BA2";
                 canAttack = false;
                 ChangeAnimationState("BA2");
@@ -104,7 +102,6 @@ public class BasicSword : MonoBehaviour
             {
                 SlashFX();
 
-                Debug.Log("BA3");
                 currentAttack = "BA3";
                 canAttack = false;
                 ChangeAnimationState("BA3");
@@ -121,8 +118,11 @@ public class BasicSword : MonoBehaviour
                 playerController.ShadowStriking = true;
                 playerController.stamina -= 45;
                 Instantiate(ShadowStrike, transform.position, transform.rotation);
-                cameraSmoother.CameraShake(0.2f, 2f);
-                cameraSmoother.CameraShake(0.05f, 5f);
+                if (cameraSmoother != null)
+                {
+                    cameraSmoother.CameraShake(0.1f, 5f);
+
+                }
                 yield return new WaitForSeconds(5f);
                 playerController.ShadowStriking = false;
                 canAttack = true; 
@@ -183,7 +183,6 @@ public class BasicSword : MonoBehaviour
         {
             if (collider.gameObject.CompareTag("Enemy"))
             {
-                Debug.Log("Enemy inside");
                 enemies.Add(collider.gameObject);
             }
         }
@@ -193,7 +192,6 @@ public class BasicSword : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy outside");
             enemies.Remove(other.gameObject);
         }
             

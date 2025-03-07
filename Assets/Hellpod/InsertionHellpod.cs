@@ -11,7 +11,8 @@ public class InsertionHellpod : MonoBehaviour
     public ParticleSystem particleSystem0;
     public AudioSource audioSource;
     public CircleCollider2D circleCollider;
-
+    public DeployCamera depCam;
+    
     public Sprite landed;
     public Vector3 landingSpot;
     public Vector3 velocity;
@@ -32,13 +33,16 @@ public class InsertionHellpod : MonoBehaviour
         particleSystem0 = GetComponentInChildren<ParticleSystem>();
         audioSource = GetComponent<AudioSource>();
         circleCollider = GetComponent<CircleCollider2D>();
-    
-        speed = 25f;
-        aoeDamage = 300f;
+        depCam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<DeployCamera>();
+        landingSpot =  new Vector2(depCam.deployPosition.x, depCam.deployPosition.y);
+
+        speed = 35f;
+        aoeDamage = 750f;
     }
 
     void Update()
     {
+
         Transformer();
     }
 
@@ -90,14 +94,15 @@ public class InsertionHellpod : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        GameObject enemy;
         List<GameObject> enemies = new List<GameObject>();
         if (collider !=null)
         {
             if (collider.gameObject.CompareTag("Enemy"))
             {
-                enemy = collider.gameObject;
-                enemies.Add(enemy);
+                if (Physics2D.Raycast(transform.position, (collider.gameObject.transform.position - transform.position).normalized, 6f))
+                {
+                    enemies.Add(collider.gameObject);
+                }
             }
         }
 
@@ -105,6 +110,7 @@ public class InsertionHellpod : MonoBehaviour
         {
             foreach (GameObject enemyObj in enemies)
             {
+                
                 enemyObj.gameObject.GetComponent<BasicEnemy>().TakeDamage(aoeDamage);
             }
         }

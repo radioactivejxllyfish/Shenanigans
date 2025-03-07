@@ -13,6 +13,7 @@ TagManager:
   - PlayerRB
   - Insertion
   - DeployCamera
+  - Map
   layers:
   - Default
   - TransparentFX

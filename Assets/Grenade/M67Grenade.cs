@@ -44,7 +44,7 @@ public class M67Grenade : MonoBehaviour
         particleSystem0 = GetComponentInChildren<ParticleSystem>();
         audioSource = GetComponent<AudioSource>();
         cursor = GameObject.FindGameObjectWithTag("Cursor");
-        damage = 120f;
+        damage = 520f;
         fuse = 3f;
         travelTime = 2.4f;
         range = 4f;
@@ -110,7 +110,6 @@ public class M67Grenade : MonoBehaviour
                 if (Physics2D.Raycast(transform.position, (enemy.transform.position - transform.position).normalized, range))
                 {
                     vulnerableEnemies.Add(enemy);
-                    Gizmos.DrawRay(transform.position, (enemy.transform.position - transform.position).normalized);
                 }
             }
         }

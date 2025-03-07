@@ -11,18 +11,15 @@ public class PlayerController : PlayerVarPool
     public float _dashpower;
     public bool canDash = true;
     public bool hasDashed = false;
-    public float stamina = 100;
-    public float MAX_STAMINA = 100;
     public bool sprinting;
     public bool isDashing = false;
     public bool isMoving;
     public bool isStunned = false;
     public bool ShadowStriking;
+    public bool isDead = false;
     public string dashDir = "LeftF";
     public string walkDir = "LeftF";
-
-    public Slider _staminaBar;
-    public Slider healthBar;
+    
     public PlayerAnimationHandler animatorHandler;
     public CursorController _cursorController;
     public AudioSource source;
@@ -58,15 +55,14 @@ public class PlayerController : PlayerVarPool
     
     private void Update()
     {
-        MovementInput();
-        // _staminaBar.value = stamina / MAX_STAMINA;
-        // healthBar.value = health / maxHealth;
-        Dash();
-        Move();
+        if (!isDead)
+        {
+            MovementInput();
+            ThrowGrenade();
+            Dash();
+            Move();
+        }
         OnDeath();
-        ThrowGrenade();
-        
-        
     }
 
 
@@ -74,13 +70,14 @@ public class PlayerController : PlayerVarPool
     {
         if (Input.GetKeyDown(KeyCode.G) && !isStunned && grenadeCount > 0)
         {
+            grenadeCount -= 1;
             Instantiate(grenade, transform.position, transform.rotation);
         }
     }
 
     private void MovementInput()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && canSprint && !isStunned && movement != Vector3.zero)
+        if (Input.GetKey(KeyCode.LeftShift) && canSprint &&!ShadowStriking && !isStunned && movement != Vector3.zero)
         {
             sprinting = true;
         }
@@ -193,7 +190,7 @@ public class PlayerController : PlayerVarPool
         if (health <= 0)
         {
             animatorHandler.ChangeAnimationState("Death");
-            Destroy(gameObject, 3f);
+            isDead = true;
         }
     }
 
@@ -280,8 +277,6 @@ public class PlayerController : PlayerVarPool
             }
             yield return new WaitForSeconds(0.1f);
         }
-
-        yield return null;
     }
 
     private void StunTrigger()

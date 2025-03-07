@@ -14,14 +14,15 @@ public class EnemyTypeExplosive : BasicEnemy
 
 
 
+    List<GameObject> enemies = new List<GameObject>();
+
     [SerializeField] private Sprite _roaming;
     [SerializeField] private Sprite _chasing;
     [SerializeField] private Sprite _exploding1;
     [SerializeField] private Sprite _exploding2;
     [SerializeField] private Sprite _exploded;
+    [SerializeField] private Sprite _destroyed;
 
-
-    public GameObject bloodSplatter;
     public ParticleSystem explosiveParticles;
 
     
@@ -31,8 +32,8 @@ public class EnemyTypeExplosive : BasicEnemy
 
         isStunned = false;
         isAlive = true;
-        maxhealth = 150f;
-        health = 150f;
+        maxhealth = 450f;
+        health = 450f;
         speed = 4f;
         damage = 120f;
 
@@ -62,7 +63,10 @@ public class EnemyTypeExplosive : BasicEnemy
             }
         }
         LOSCheck();
-        Movement();
+        if (!_isDead)
+        {
+            Movement();
+        }
         Mathf.Clamp(health, 0f, maxhealth);
         DeathHandler();
     }
@@ -72,6 +76,11 @@ public class EnemyTypeExplosive : BasicEnemy
     {
         if (health <= 0f)
         {
+            if (!_exploding && health <= 0)
+            {
+                spriteRenderer.sprite = _destroyed;
+            }
+
             rigidBody.velocity = Vector2.zero;
             _isDead = true;
             Destroy(gameObject, 7f);
@@ -88,12 +97,8 @@ public class EnemyTypeExplosive : BasicEnemy
         {
             spriteRenderer.flipX = true;
         }
-        else
-        {
-            
-        }
         float chance = Random.Range(0f, 1f);
-        if (player != null && _hasLineOfSight && !_exploding && !_isDead)
+        if (player != null && _hasLineOfSight && !_exploding)
         {
             spriteRenderer.sprite = _chasing;
 
@@ -101,14 +106,14 @@ public class EnemyTypeExplosive : BasicEnemy
             direction = (player.transform.position - transform.position).normalized;
             rigidBody.velocity = direction * speed;
         }
-        else if (player == null && chance > 0.0125f && _isRoaming == false && !_hasLineOfSight && !_exploding && !_isDead)
+        else if (player == null && chance > 0.0125f && _isRoaming == false && !_hasLineOfSight && !_exploding)
         {
             spriteRenderer.sprite = _roaming;
 
             direction = Vector2.zero;
             rigidBody.velocity = Vector2.zero;
         }
-        else if (chance <= 0.0125f && _isRoaming == false && !_hasLineOfSight && !_exploding && !_isDead)
+        else if (chance <= 0.0125f && _isRoaming == false && !_hasLineOfSight && !_exploding)
         {
             spriteRenderer.sprite = _roaming;
 
@@ -178,10 +183,13 @@ public class EnemyTypeExplosive : BasicEnemy
     {
         if (other != null)
         {
+            if (other.gameObject.CompareTag("Enemy"))
+            {
+                enemies.Add(other.gameObject);
+            }
             if (other.gameObject.CompareTag("PlayerRB"))
             {
                 player = other.gameObject;
-                Debug.Log("Player Entered");
             }
         }
     }
@@ -190,10 +198,13 @@ public class EnemyTypeExplosive : BasicEnemy
     {
         if (collider != null)
         {
+            if (collider.gameObject.CompareTag("Enemy"))
+            {
+                enemies.Remove(collider.gameObject);
+            }
             if (collider.gameObject.CompareTag("PlayerRB"))
             {
                 player = null;
-                Debug.Log("Player Exited");
             }
         }
     }
@@ -229,7 +240,20 @@ public class EnemyTypeExplosive : BasicEnemy
                     explosiveParticles.Play();
                     if (Vector2.Distance(player.transform.position, transform.position) < 3f)
                     {
-                        player.GetComponent<PlayerVarPool>().TakeDamage(damage);
+                        foreach (GameObject enemy in enemies)
+                        {
+                            if (Vector2.Distance(enemy.gameObject.transform.position, transform.position) < 3f)
+                            {
+                                if (Physics2D.Raycast(transform.position, (enemy.transform.position - transform.position).normalized, 3f))
+                                {
+                                    enemy.gameObject.GetComponent<BasicEnemy>().TakeDamage(damage);
+                                }
+                            }
+                        }
+                        if (Physics2D.Raycast(transform.position, (player.transform.position - transform.position).normalized, 3f))
+                        {
+                            player.GetComponent<PlayerVarPool>().TakeDamage(damage);
+                        }
                         _cameraSmoother.CameraShake(0.2f, 0.25f);
                         spriteRenderer.sprite = _exploded;
                         health = 0f;
@@ -239,6 +263,17 @@ public class EnemyTypeExplosive : BasicEnemy
                     }
                     else
                     {
+                        foreach (GameObject enemy in enemies)
+                        {
+                            if (Vector2.Distance(enemy.gameObject.transform.position, transform.position) < 3f)
+                            {
+                                if (Physics2D.Raycast(transform.position, (enemy.transform.position - transform.position).normalized, 3f))
+                                {
+                                    enemy.gameObject.GetComponent<BasicEnemy>().TakeDamage(damage);
+                                }
+                            }
+                     
+                        }
                         _cameraSmoother.CameraShake(0.15f, 0.08f);
                         spriteRenderer.sprite = _exploded;
                         health = 0f;
