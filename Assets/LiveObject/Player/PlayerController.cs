@@ -36,6 +36,7 @@ public class PlayerController : PlayerVarPool
     public int grenadeCount;
     private void Start()
     {
+        cameraSmoother = Camera.main.GetComponent<CameraSmoother>();
         source = GetComponent<AudioSource>();
         cursor = GameObject.FindGameObjectWithTag("Cursor");
         _cursorController = cursor.GetComponent<CursorController>();

@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BasicRifle : MonoBehaviour
 {
@@ -15,6 +18,7 @@ public class BasicRifle : MonoBehaviour
     public CursorController cursorController;
     public PlayerController playerController;
     public AudioSource source;
+    public TMP_Text tmp;
 
     public float spread;
     public float damage;
@@ -36,6 +40,7 @@ public class BasicRifle : MonoBehaviour
     
     void Start()
     {
+        tmp = GetComponentInChildren<TMP_Text>();
         player = GameObject.FindGameObjectWithTag("PlayerRB");
         cursor = GameObject.FindGameObjectWithTag("Cursor");
         cursorController = cursor.GetComponent<CursorController>();
@@ -57,6 +62,7 @@ public class BasicRifle : MonoBehaviour
 
     private void FixedUpdate()
     {
+        tmp.text = Convert.ToString(currentAmmo + "/" + ammoReserve);
         if (player != null)
         {
             Fire1();

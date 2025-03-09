@@ -15,12 +15,14 @@ public abstract class PlayerVarPool : MonoBehaviour
     public Vector3 movement;
     public GameObject player;
     public GameObject cursor;
+    public CameraSmoother cameraSmoother;
 
 
 
     public void TakeDamage(float damage)
     {
         health -= damage;
+        cameraSmoother.CameraShake(0.05f,0.01f);
     }
     
 
