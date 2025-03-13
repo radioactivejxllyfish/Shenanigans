@@ -33,6 +33,8 @@ public class PlayerController : PlayerVarPool
     public AudioClip walk3;
     public AudioClip dash;
 
+    public float currentSpeed;
+    public float slowSpd;
     public int grenadeCount;
     private void Start()
     {
@@ -45,7 +47,9 @@ public class PlayerController : PlayerVarPool
         hasDashed = false;
         grenadeCount = 3;
         _dashpower = 8f;
+        currentSpeed = 5f;
         speed = 5f;
+        slowSpd = 2.5f;
         maxHealth = 100f;
         health = maxHealth;
         
@@ -108,7 +112,7 @@ public class PlayerController : PlayerVarPool
         }
         else
         {
-            playerRb.velocity = movement.normalized * speed;
+            playerRb.velocity = movement.normalized * currentSpeed;
         }
         
         if (playerRb.velocity.magnitude >= 0.4f && !isDashing && !sprinting)
@@ -301,7 +305,7 @@ public class PlayerController : PlayerVarPool
             elapsed += Time.deltaTime;
             yield return null;
         }
-        yield return new WaitForSeconds(1.1f);
+        yield return new WaitForSeconds(0.8f);
         isDashing = false;
         canDash = true;
         isStunned = false;

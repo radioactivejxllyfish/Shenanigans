@@ -19,7 +19,7 @@ public class BasicSword : MonoBehaviour
     public GameObject enemy;
     public List<GameObject> enemies;
     public AudioSource audioFX;
-
+    
 
     
     public AudioClip slashfx1;
@@ -28,7 +28,7 @@ public class BasicSword : MonoBehaviour
     public AudioClip shadowfx;
 
     public float damage;
-    
+
     public bool canAttack = true;
     public string currentAttack;
     public string currentState;
@@ -49,7 +49,6 @@ public class BasicSword : MonoBehaviour
     private void OnEnable()
     {
         StartCoroutine("Attack");
-
     }
     void FixedUpdate()
     {
@@ -206,6 +205,5 @@ public class BasicSword : MonoBehaviour
         if (currentState == newState) return;
         animator.Play(newState); 
         currentState = newState;
-        
     }
 }

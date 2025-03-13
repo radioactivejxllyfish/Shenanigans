@@ -37,11 +37,11 @@ public class CursorController : MonoBehaviour
             {
                 Direction = "Right";
             }
-            else if (direction.x <= 0)
+            else if (direction.x < 0)
             {
                 Direction = "Left";
             }
-            else if (direction.x == 1)
+            else if (direction.x == 0)
             {
                 Direction = "Left";
             }

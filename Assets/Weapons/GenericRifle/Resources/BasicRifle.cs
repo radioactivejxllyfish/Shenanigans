@@ -48,7 +48,7 @@ public class BasicRifle : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         source = GetComponent<AudioSource>();
 
-        spread = 0.05f;
+        spread = 5f;
         fireRate = 0.085f;
         ammoReserve = 120;
         magazineCapacity = 30;
