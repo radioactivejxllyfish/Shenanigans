@@ -67,6 +67,10 @@ public class PlayerController : PlayerVarPool
             Dash();
             Move();
         }
+        else
+        {
+            playerRb.velocity = Vector2.zero;
+        }
         OnDeath();
     }
 
@@ -257,14 +261,14 @@ public class PlayerController : PlayerVarPool
         {
             if (sprinting && stamina > 0 )
             {
-                speed = 9f;
+                currentSpeed = 9f;
                 stamina -= 2f;
                 if (stamina < 0) stamina = 0;
                 yield return null;
             }
             else if (!sprinting)
             {
-                speed = 5f;
+                currentSpeed = 5f;
                 stamina += 1f;
                 if (stamina > MAX_STAMINA) stamina = MAX_STAMINA;
                 yield return null;
@@ -272,7 +276,7 @@ public class PlayerController : PlayerVarPool
             else if (stamina == 0)
             {
                 canSprint = false;
-                speed = 3f;
+                currentSpeed = 3f;
                 yield return new WaitForSeconds(3f);
             }
 

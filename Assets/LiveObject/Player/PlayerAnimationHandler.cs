@@ -21,7 +21,11 @@ public class PlayerAnimationHandler : MonoBehaviour
 
     void Update()
     {
-        Flip();
+        if (!playerController.isDead && !playerController.isStunned)
+        {
+            Flip();
+
+        }
         _velocity = playerRb.velocity.magnitude;
     }
 
