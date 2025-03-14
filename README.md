@@ -46,17 +46,17 @@
 +Reworked default melee  
 +Reworked default ranged  
 
-# 0.0.5 [3/2/2025]  
+## 0.0.5 [3/2/2025]  
 +Added stats multiplier  
 +Added Liquidator's ultility(m67 grenade)  
 +Added Insertion: Hellpod  
 +Liquidator is now finished
 
-# 0.0.6 [forgor date]  
+## 0.0.6 [forgor date]  
 +New enemy type  
 +Enemy combat AI  
 
-#0.0.7  
+## 0.0.7  
 +Objective: Defusal  
 -Loot drops  
 +Consumables  
