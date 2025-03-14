@@ -52,3 +52,11 @@
 +Added Insertion: Hellpod  
 +Liquidator is now finished
 
+# 0.0.6 [forgor date]  
++New enemy type  
++Enemy combat AI  
+
+#0.0.7  
++Objective: Defusal  
+-Loot drops  
++Consumables  
