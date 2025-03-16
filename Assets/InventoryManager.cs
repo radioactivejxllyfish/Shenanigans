@@ -9,10 +9,30 @@ public class InventoryManager : MonoBehaviour
     public InventorySlot[] inventorySlots;
     public GameObject InventoryItemPrefab;
 
+    private int selectedSlot = -1;
+
+    public void ChangeSelectedSlot(int newValue)
+    {
+        if (selectedSlot >= 0)
+        {
+            inventorySlots[selectedSlot].DeSelect();
+
+        }
+        
+        inventorySlots[newValue].Select();
+        selectedSlot = newValue;
+    }
 
     private void Update()
     {
-        
+        if (Input.inputString != null)
+        {
+            bool isNumber = int.TryParse(Input.inputString, out int number);
+            if (isNumber && number > 0 && number < 10)
+            {
+                ChangeSelectedSlot(number -1);
+            }
+        }
     }
 
     public bool AddItem(Item item)
@@ -52,9 +72,5 @@ public class InventoryManager : MonoBehaviour
         InventoryItem inventoryItem = newItemGO.GetComponent<InventoryItem>();
         inventoryItem.InitItem(item);
     }
-
-    public Item GetSelectedItem()
-    {
-        InventoryItem itemInSlot = inventorySlots.
-    }
+    
 }

@@ -75,6 +75,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3146c873db987064eb49fa6e750c6043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  image: {fileID: 1980580382692002448}
+  selectedColor: {r: 0, g: 1, b: 0.10144925, a: 1}
+  notSelectedColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!222 &3271177246107286591
 CanvasRenderer:
   m_ObjectHideFlags: 0
