@@ -24,15 +24,14 @@ public class PlayerController : PlayerVarPool
     public CursorController _cursorController;
     public AudioSource source;
     public GameObject grenade;
-
-
-
+    
 
     public AudioClip walk1;
     public AudioClip walk2;
     public AudioClip walk3;
     public AudioClip dash;
 
+    public bool underUI = false;
     public float currentSpeed;
     public float slowSpd;
     public int grenadeCount;
@@ -57,7 +56,12 @@ public class PlayerController : PlayerVarPool
         StartCoroutine("HpRegen");
         StartCoroutine(WalkSound());
     }
-    
+
+    private void Awake()
+    {
+
+    }
+
     private void Update()
     {
         if (!isDead)

@@ -57,7 +57,6 @@ public class ObjectiveDefusal : MonoBehaviour
         
         if (_ui.gameObject.activeInHierarchy)
         {
-
             MainFunc();
             SlideRunner();
             if (points >= 5)
@@ -90,7 +89,7 @@ public class ObjectiveDefusal : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            float tolerance = _hit.value * 0.25f;
+            float tolerance = _hit.value * 0.22f;
             if (Mathf.Abs(_slider.value - _hit.value) <= tolerance && _canScore)
             {
                 led.color = Color.green;
@@ -111,7 +110,7 @@ public class ObjectiveDefusal : MonoBehaviour
     }
     private IEnumerator PointSetter()
     {
-        speed = Random.Range(0.85f, 1.55f);
+        speed = Random.Range(0.85f, 2f);
         _canScore = false;
         _knot.color = Color.red;
         randomChance = Random.Range(0.12f, 0.88f);
