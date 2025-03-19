@@ -15,6 +15,7 @@ TagManager:
   - DeployCamera
   - Map
   - Objective
+  - InventoryManager
   layers:
   - Default
   - TransparentFX
