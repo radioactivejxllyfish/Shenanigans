@@ -15,6 +15,7 @@ public class Test : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.J))
         {
             InventoryManager.Instance.AddItem(ItemType.Bandage, 1);
+            InventoryManager.Instance.AddItem(ItemType.Medkit, 1);
 
             int potionCount = InventoryManager.Instance.GetItemCount(ItemType.Bandage);
             Debug.Log("Health Potions: " + potionCount);
