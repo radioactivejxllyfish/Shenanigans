@@ -18,4 +18,5 @@ MonoBehaviour:
   healAmount: 0
   addArmor: 0
   restoreStamina: 100
-  sprite: {fileID: 21300000, guid: 624ad34cea8d02b4f9918c63d5559982, type: 3}
+  sprite: {fileID: 21300000, guid: 70932a8fe5e05f946ad2f5ae9e7bd1b6, type: 3}
+  description: Energy drink can. Instantly restore 100 stamina.

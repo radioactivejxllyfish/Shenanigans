@@ -18,4 +18,5 @@ MonoBehaviour:
   healAmount: 25
   addArmor: 0
   restoreStamina: 0
-  sprite: {fileID: 21300000, guid: 60bfec822ab4bb647817144f30ac6668, type: 3}
+  sprite: {fileID: 21300000, guid: c4936e78e3a3557448aec299573c13cd, type: 3}
+  description: Standard issue bandage roll. Recovers 25HP.

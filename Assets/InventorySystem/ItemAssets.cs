@@ -12,5 +12,5 @@ public class ItemAssets : ScriptableObject
     public int addArmor;
     public int restoreStamina;
     public Sprite sprite;
-
+    public string description;
 }

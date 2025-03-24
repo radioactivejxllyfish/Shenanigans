@@ -127,7 +127,7 @@ public class InventoryManager : MonoBehaviour
         // Set the UI elements
         itemDetailsUI.transform.Find("ItemIcon").GetComponent<Image>().sprite = item.sprite;
         itemDetailsUI.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.itemName;
-        itemDetailsUI.transform.Find("ItemDescription").GetComponent<TextMeshProUGUI>().text = "Example Description"; // Add a real description
+        itemDetailsUI.transform.Find("ItemDescription").GetComponent<TextMeshProUGUI>().text = item.description; // Add a real description
 
         // Setup the "Use" and "Discard" buttons
         itemDetailsUI.transform.Find("UseButton").GetComponent<Button>().onClick.RemoveAllListeners();
