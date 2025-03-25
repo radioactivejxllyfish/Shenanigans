@@ -8,6 +8,7 @@ using Random = UnityEngine.Random;
 
 public class PlayerController : PlayerVarPool
 {
+    public bool usingItem = false;
     public float _dashpower;
     public bool canDash = true;
     public bool hasDashed = false;
@@ -362,5 +363,15 @@ public class PlayerController : PlayerVarPool
             }
             yield return null;
         }
+    }
+
+    public void UseItemCountdown(float duration, string animation)
+    {
+        
+    }
+
+    private IEnumerator UseItem(float time)
+    {
+        yield return null;
     }
 }

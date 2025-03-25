@@ -21,6 +21,8 @@ public class WeaponSelector : MonoBehaviour
     {
         melee = Instantiate(meleeInt, transform.position, transform.rotation);
         ranged = Instantiate(rangedInt, transform.position, transform.rotation);
+        melee.name = "Primary";
+        ranged.name = "Secondary";
         basicRifle = ranged.GetComponent<BasicRifle>();
         basicSword = melee.GetComponent<BasicSword>();
         meleeInt.SetActive(true);

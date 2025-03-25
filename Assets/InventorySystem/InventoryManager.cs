@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class InventoryManager : MonoBehaviour
 {
 
+    public ItemUsageHandler itemUsageHandler;
     [SerializeField] private GameObject inventoryUI;
 
     [SerializeField]public GameObject itemDetailsUI;
@@ -131,10 +132,23 @@ public class InventoryManager : MonoBehaviour
 
         // Setup the "Use" and "Discard" buttons
         itemDetailsUI.transform.Find("UseButton").GetComponent<Button>().onClick.RemoveAllListeners();
-        // itemDetailsUI.transform.Find("UseButton").GetComponent<Button>().onClick.AddListener(() => UseItem(item)); 
+        itemDetailsUI.transform.Find("UseButton").GetComponent<Button>().onClick.AddListener(() => UseItem(itemType)); 
 
         itemDetailsUI.transform.Find("DiscardButton").GetComponent<Button>().onClick.RemoveAllListeners();
         itemDetailsUI.transform.Find("DiscardButton").GetComponent<Button>().onClick.AddListener(() => RemoveItem(itemType, 1));
+    }
+    
+    private void UseItem(ItemType itemType)
+    {
+        ItemAssets item = Resources.Load<ItemAssets>($"Items/{itemType}");
+        if (item == null) return;
+        itemUsageHandler.UseItem(item);
+        RemoveItem(itemType, 1);  // Consume the item after use
+        if (GetItemCount(itemType) == 0)
+        {
+            itemDetailsUI.SetActive(false);  // Close details panel after using
+
+        }
     }
 
     

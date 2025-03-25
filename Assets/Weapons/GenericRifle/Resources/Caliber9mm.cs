@@ -49,6 +49,10 @@ public class Caliber9mm : MonoBehaviour
                 enemy.GetComponent<BasicEnemy>().TakeDamage(_damage);
                 Destroy(gameObject);
             }
+            else if (!other.gameObject.CompareTag("Objective") && !other.gameObject.CompareTag("PlayerRB") && !other.gameObject.CompareTag("Insertion") && !other.gameObject.CompareTag("Loot"))
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
