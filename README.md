@@ -58,5 +58,10 @@
 
 ## 0.0.7  
 +Objective: Defusal  
--Loot drops  
++Loot drops  
 +Consumables  
+
+## 0.0.8  [3/28/2025]  
++Inventory system  
++Loot drops  
+
