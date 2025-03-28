@@ -120,7 +120,6 @@ public class EnemyTypeSlime : BasicEnemy
             rigidBody.velocity = heading * 2f;
 
         }
-        Debug.Log("Roaming");
         yield return new WaitForSeconds(Random.Range(2f, 6f));
         _isRoaming = false;
     }

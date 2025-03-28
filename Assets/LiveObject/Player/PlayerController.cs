@@ -54,7 +54,6 @@ public class PlayerController : PlayerVarPool
         health = maxHealth;
         
         StartCoroutine("Sprint");
-        StartCoroutine("HpRegen");
         StartCoroutine(WalkSound());
     }
 
@@ -347,23 +346,7 @@ public class PlayerController : PlayerVarPool
         }
     }
     
-
-    private IEnumerator HpRegen()
-    {
-        while (true)
-        {
-            if (health < maxHealth)
-            {
-                yield return new WaitForSeconds(2.5f);
-                while (health < maxHealth)
-                {
-                    health += Time.deltaTime;
-                    yield return new WaitForSeconds(0.02f);
-                }
-            }
-            yield return null;
-        }
-    }
+    
 
     public void UseItemCountdown(float duration, string animation)
     {

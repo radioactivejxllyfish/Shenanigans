@@ -12,6 +12,8 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]public GameObject itemDetailsUI;
     public static InventoryManager Instance { get; private set; }
 
+    public PlayerVarPool playerVarPool;
+
     private Dictionary<ItemType, int> itemCounts = new Dictionary<ItemType, int>();
     private Dictionary<ItemType, GameObject> itemUIMap = new Dictionary<ItemType, GameObject>();
 
@@ -36,11 +38,16 @@ public class InventoryManager : MonoBehaviour
     
     private void Start()
     {
+        
         itemDetailsUI.transform.Find("CloseButton").GetComponent<Button>().onClick.AddListener(CloseItemDetails);
     }
 
     private void Awake()
     {
+        if (playerVarPool == null)
+        {
+            playerVarPool = GameObject.FindGameObjectWithTag("PlayerRB").GetComponent<PlayerVarPool>();
+        }
         if (Instance == null)
         {
             Instance = this;
@@ -118,22 +125,40 @@ public class InventoryManager : MonoBehaviour
     
     public void OnInventoryItemClicked(ItemType itemType)
     {
-        // Retrieve the actual item data from the resources
         ItemAssets item = Resources.Load<ItemAssets>($"Items/{itemType}");
         if (item == null) return;
 
-        // Show the item details UI
         itemDetailsUI.SetActive(true);
 
-        // Set the UI elements
         itemDetailsUI.transform.Find("ItemIcon").GetComponent<Image>().sprite = item.sprite;
         itemDetailsUI.transform.Find("ItemName").GetComponent<TextMeshProUGUI>().text = item.itemName;
-        itemDetailsUI.transform.Find("ItemDescription").GetComponent<TextMeshProUGUI>().text = item.description; // Add a real description
+        itemDetailsUI.transform.Find("ItemDescription").GetComponent<TextMeshProUGUI>().text = item.description; 
 
-        // Setup the "Use" and "Discard" buttons
         itemDetailsUI.transform.Find("UseButton").GetComponent<Button>().onClick.RemoveAllListeners();
-        itemDetailsUI.transform.Find("UseButton").GetComponent<Button>().onClick.AddListener(() => UseItem(itemType)); 
+        itemDetailsUI.transform.Find("UseButton").GetComponent<Button>().onClick.AddListener(() =>
+        {
+            ItemAssets itemData = Resources.Load<ItemAssets>($"Items/{itemType}");
+            if (itemData != null && itemData.isConsumable)
+            {
+                if (itemData.healAmount > 0 && playerVarPool.health < playerVarPool.maxHealth)
+                {
+                    UseItem(itemType);
+                }
+                else if (itemData.addArmor > 0 && playerVarPool.armorCount < playerVarPool.maxArmorCount)
+                {
+                    UseItem(itemType);
+                }
+                else if (itemData.restoreStamina > 0 && playerVarPool.stamina < playerVarPool.MAX_STAMINA)
+                {
+                    UseItem(itemType);
 
+                }
+                else
+                {
+                }
+            }
+        });
+        
         itemDetailsUI.transform.Find("DiscardButton").GetComponent<Button>().onClick.RemoveAllListeners();
         itemDetailsUI.transform.Find("DiscardButton").GetComponent<Button>().onClick.AddListener(() => RemoveItem(itemType, 1));
     }

@@ -10,6 +10,9 @@ public abstract class PlayerVarPool : MonoBehaviour
     public float maxHealth;
     public float stamina = 100;
     public float MAX_STAMINA = 100;
+    public float armorCount = 0;
+    public float maxArmorCount = 80;
+
 
     public bool canSprint = true;
     public Vector3 movement;
@@ -21,8 +24,26 @@ public abstract class PlayerVarPool : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        health -= damage;
-        cameraSmoother.CameraShake(0.05f,0.01f);
+        if (health > 0)
+        {
+            stamina -= damage * 1.85f;
+            float deduction;
+            if (armorCount > 0)
+            {
+                deduction = damage - armorCount;
+                armorCount = armorCount - damage;
+                if (armorCount < 0)
+                {
+                    health -= deduction;
+                }
+            }
+            else
+            {
+                health -= damage;
+            }
+            cameraSmoother.CameraShake(0.05f * damage,0.01f);
+        }
+
     }
     
 

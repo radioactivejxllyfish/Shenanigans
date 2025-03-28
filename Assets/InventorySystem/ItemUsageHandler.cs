@@ -35,19 +35,26 @@ public class ItemUsageHandler : MonoBehaviour
     
     private void Heal(int amount)
     {
-        Debug.Log($"Healed for {amount} HP");
-        playerController.health += amount;
+        if (playerController.health < playerController.maxHealth)
+        {
+            playerController.health += amount;
+        }
     }
 
     private void AddArmor(int amount)
     {
-        Debug.Log($"Gained {amount} armor");
-        playerController.health += amount;
+        if (playerController.armorCount < playerController.maxArmorCount)
+        {
+            playerController.armorCount += amount;
+        }
     }
 
     private void RestoreStamina(int amount)
     {
-        playerController.stamina += amount;
+        if (playerController.stamina < playerController.MAX_STAMINA)
+        {
+            playerController.stamina += amount;
+        }
     }
     
     
