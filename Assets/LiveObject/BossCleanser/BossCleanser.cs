@@ -1,16 +1,15 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Search;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-public class EnemyTypeSlime : BasicEnemy
+public class BossCleanser : BasicEnemy
 {
 
+ 
     private bool _hasLineOfSight = false;
     private bool _isRoaming = false;
-    
+    public GameObject humanoidRootPart;
+
     void Start()
     {
 
@@ -49,7 +48,16 @@ public class EnemyTypeSlime : BasicEnemy
 
     private void Movement()
     {
+        if (rigidBody.velocity.x > 0)
+        {
+            humanoidRootPart.transform.localScale = new Vector3(3, 3, 3);
+        }
+        else if (rigidBody.velocity.x < 0)
+        {
+            humanoidRootPart.transform.localScale = new Vector3(-3, 3, 3);
+        }
 
+        
         float chance = Random.Range(0f, 1f);
         if (player != null && _hasLineOfSight)
         {
@@ -76,19 +84,20 @@ public class EnemyTypeSlime : BasicEnemy
         {
             RaycastHit2D ray = Physics2D.Raycast(transform.position,(player.transform.position - transform.position).normalized);
             if (ray.collider != null)
+            {
+                if (ray.collider.CompareTag("PlayerRB"))
                 {
-                    if (ray.collider.CompareTag("PlayerRB"))
-                    {
-                        Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized);
-                        _hasLineOfSight = true;
-                    }
-                    else
-                    {
-                        _hasLineOfSight = false;
-                    }
+                    Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized);
+                    _hasLineOfSight = true;
                 }
+                else
+                {
+                    _hasLineOfSight = false;
+                }
+            }
         }
     }
+
 
 
 
@@ -145,4 +154,6 @@ public class EnemyTypeSlime : BasicEnemy
             }
         }
     }
+
+
 }
