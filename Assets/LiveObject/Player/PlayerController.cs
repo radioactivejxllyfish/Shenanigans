@@ -64,6 +64,16 @@ public class PlayerController : PlayerVarPool
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            isStunned = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            isStunned = false;
+
+        }
         health = Mathf.Clamp(health, 0, maxHealth);
         stamina = Mathf.Clamp(stamina,0, MAX_STAMINA);
         if (!isDead)
