@@ -5,9 +5,16 @@ using UnityEngine;
 public class BossCleanser : BasicEnemy
 {
 
- 
+    private bool hasFoundCamera = false;
     private bool _hasLineOfSight = false;
     private bool _isRoaming = false;
+    private bool _isDead = false;
+    private CameraSmoother _cameraSmoother;
+    private bool _attacking = false;
+    
+
+
+    List<GameObject> enemies = new List<GameObject>();
     public GameObject humanoidRootPart;
 
     void Start()
@@ -27,6 +34,8 @@ public class BossCleanser : BasicEnemy
         sight = GetComponentInChildren<CircleCollider2D>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
+
+        StartCoroutine("SlamMove");
     }
 
     void Update()
@@ -48,33 +57,37 @@ public class BossCleanser : BasicEnemy
 
     private void Movement()
     {
-        if (rigidBody.velocity.x > 0)
+        if (!_attacking)
         {
-            humanoidRootPart.transform.localScale = new Vector3(3, 3, 3);
-        }
-        else if (rigidBody.velocity.x < 0)
-        {
-            humanoidRootPart.transform.localScale = new Vector3(-3, 3, 3);
-        }
+            if (rigidBody.velocity.x > 0)
+            {
+                humanoidRootPart.transform.localScale = new Vector3(3, 3, 3);
+            }
+            else if (rigidBody.velocity.x < 0)
+            {
+                humanoidRootPart.transform.localScale = new Vector3(-3, 3, 3);
+            }
 
         
-        float chance = Random.Range(0f, 1f);
-        if (player != null && _hasLineOfSight)
-        {
-            _isRoaming = false;
-            direction = (player.transform.position - transform.position).normalized;
-            rigidBody.velocity = direction * speed;
+            float chance = Random.Range(0f, 1f);
+            if (player != null && _hasLineOfSight)
+            {
+                _isRoaming = false;
+                direction = (player.transform.position - transform.position).normalized;
+                rigidBody.velocity = direction * speed;
+            }
+            else if (player == null && chance > 0.0125f && _isRoaming == false && !_hasLineOfSight)
+            {
+                direction = Vector2.zero;
+                rigidBody.velocity = Vector2.zero;
+            }
+            else if (chance <= 0.0125f && _isRoaming == false && !_hasLineOfSight)
+            {
+                StartCoroutine(Roaming());
+            }
+
         }
-        else if (player == null && chance > 0.0125f && _isRoaming == false && !_hasLineOfSight)
-        {
-            direction = Vector2.zero;
-            rigidBody.velocity = Vector2.zero;
-        }
-        else if (chance <= 0.0125f && _isRoaming == false && !_hasLineOfSight)
-        {
-            StartCoroutine(Roaming());
-        }
-        
+
     }
 
 
@@ -103,6 +116,7 @@ public class BossCleanser : BasicEnemy
 
     private IEnumerator Roaming()
     {
+        yield return new WaitForSeconds(1f);
         float elapsed = 0.0f;
         float random = Random.Range(0f, 360f);
         Vector2 heading = new Vector2(Mathf.Cos(random), Mathf.Sin(random));
@@ -152,6 +166,42 @@ public class BossCleanser : BasicEnemy
             {
                 player = null;
             }
+        }
+    }
+
+    private IEnumerator SlamMove()
+    {
+        while (true)
+        {
+            if (player != null && Vector2.Distance(player.transform.position, transform.position)  < 2.5f &&!_isDead)
+            {
+                _attacking = true;
+                direction = Vector2.zero;
+                rigidBody.velocity = Vector2.zero;
+                yield return new WaitForSeconds(0.5f);
+                if (Vector2.Distance(player.transform.position, transform.position) < 2.5f)
+                {             
+                    rigidBody.velocity = Vector2.zero;
+                    Debug.Log("SlamAttack");
+                    yield return new WaitForSeconds(0.8f);
+                    player.GetComponent<PlayerController>().isStunned = true;
+                    player.GetComponent<PlayerVarPool>().TakeDamage(70);
+                    player.GetComponent<PlayerVarPool>().ApplyKnockback(transform.position, 5f);
+                    yield return new WaitForSeconds(0.4f);
+                    player.GetComponent<PlayerController>().isStunned = false;
+                    _attacking = false;
+
+                }
+                else
+                {
+                    _attacking = false;
+                    yield return null;
+                }
+            
+                yield return null;
+            }
+            yield return null;
+
         }
     }
 

@@ -43,7 +43,12 @@ public abstract class PlayerVarPool : MonoBehaviour
             }
             cameraSmoother.CameraShake(0.05f * damage,0.01f);
         }
+    }
+    public void ApplyKnockback(Vector2 sourcePosition, float knockbackForce)
+    {
+        Vector2 knockbackDirection = (transform.position - (Vector3)sourcePosition).normalized;
 
+        playerRb.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
     }
     
 
