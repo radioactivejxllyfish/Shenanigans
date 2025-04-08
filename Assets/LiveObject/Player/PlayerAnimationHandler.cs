@@ -12,6 +12,8 @@ public class PlayerAnimationHandler : MonoBehaviour
     public Animator torsoAnimator;
     private bool combatMode;
 
+    public string Direction;
+
     private CursorController _cursor;
     private string currentState;
     private bool ModeSwitching = false;
@@ -27,23 +29,21 @@ public class PlayerAnimationHandler : MonoBehaviour
     void Update()
     {
         HeadAnimation();
-        if ( !ModeSwitching &&!combatMode && Input.GetKeyDown(KeyCode.T))
-        {
-            StartCoroutine("SwitchMode");
-            combatMode = true;
-            StartCoroutine("CombatEngage");
-        }
-        else if ( !ModeSwitching && combatMode && Input.GetKeyDown(KeyCode.T))
-        {
-            StartCoroutine("SwitchMode");
-            combatMode = false;
-            StartCoroutine("CombatDisengage");
-        }
-        
         if (!playerController.isDead && !playerController.isStunned)
         {
             Flip();
-
+            if ( !ModeSwitching &&!combatMode && Input.GetKeyDown(KeyCode.T))
+            {
+                StartCoroutine("SwitchMode");
+                combatMode = true;
+                StartCoroutine("CombatEngage");
+            }
+            else if ( !ModeSwitching && combatMode && Input.GetKeyDown(KeyCode.T))
+            {
+                StartCoroutine("SwitchMode");
+                combatMode = false;
+                StartCoroutine("CombatDisengage");
+            }
         }
         _velocity = playerRb.velocity.magnitude;
     }
@@ -71,14 +71,16 @@ public class PlayerAnimationHandler : MonoBehaviour
 
     private void Flip()
     {
-        if (!playerController.isDashing)
+        if (!playerController.isDashing && !playerController.isStunned)
         {
             if (_cursor.Direction == "Right")
             {
+                Direction = "Right";
                 transform.localScale = new Vector3(1, 1, 1);
             }
             else if (_cursor.Direction == "Left")
             {
+                Direction = "Left";
                 transform.localScale = new Vector3(-1 , 1, 1);
             }
         }

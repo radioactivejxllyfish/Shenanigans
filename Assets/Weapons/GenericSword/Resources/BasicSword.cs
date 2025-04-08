@@ -108,13 +108,13 @@ public class BasicSword : MonoBehaviour
                 yield return new WaitForSeconds(0.55f);
                 canAttack = true;
             }
-            else if (Input.GetKeyDown(KeyCode.E) && canAttack && playerController.stamina >= 45 && !playerController.ShadowStriking)
+            else if (Input.GetKeyDown(KeyCode.E) && canAttack && playerController.stamina >= 45 && !playerController.usingSkill)
             {
                 audioFX.clip = shadowfx;
                 audioFX.Play();
                 
                 canAttack = false;
-                playerController.ShadowStriking = true;
+                playerController.usingSkill = true;
                 playerController.stamina -= 45;
                 Instantiate(ShadowStrike, transform.position, transform.rotation);
                 if (cameraSmoother != null)
@@ -123,7 +123,7 @@ public class BasicSword : MonoBehaviour
 
                 }
                 yield return new WaitForSeconds(5f);
-                playerController.ShadowStriking = false;
+                playerController.usingSkill = false;
                 canAttack = true; 
             }
             yield return null;

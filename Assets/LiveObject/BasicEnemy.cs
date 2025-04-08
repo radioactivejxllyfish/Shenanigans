@@ -23,7 +23,7 @@ public class BasicEnemy : MonoBehaviour
     
     
     
-    public void TakeDamage(float damage)
+    public void TakeDamage(float dmg)
     {
         health -= damage;
         speed -= speed * (3f/100f) ;

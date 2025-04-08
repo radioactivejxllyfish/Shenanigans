@@ -22,28 +22,7 @@ public abstract class PlayerVarPool : MonoBehaviour
 
 
 
-    public void TakeDamage(float damage)
-    {
-        if (health > 0)
-        {
-            stamina -= damage * 1.85f;
-            float deduction;
-            if (armorCount > 0)
-            {
-                deduction = damage - armorCount;
-                armorCount = armorCount - damage;
-                if (armorCount < 0)
-                {
-                    health -= deduction;
-                }
-            }
-            else
-            {
-                health -= damage;
-            }
-            cameraSmoother.CameraShake(0.05f * damage,0.01f);
-        }
-    }
+
     public void ApplyKnockback(Vector2 sourcePosition, float knockbackForce)
     {
         Vector2 knockbackDirection = (transform.position - (Vector3)sourcePosition).normalized;

@@ -195,7 +195,7 @@ public class ObjectiveDefusal : MonoBehaviour
         particles.Play();
         if (_player != null)
         {
-            _player.GetComponent<PlayerVarPool>().TakeDamage(400f);
+            _player.GetComponent<PlayerController>().TakeDamage(400f, "Explosive");
             _player.GetComponent<PlayerVarPool>().cameraSmoother.CameraShake(0.1f,0.05f);
         }
 

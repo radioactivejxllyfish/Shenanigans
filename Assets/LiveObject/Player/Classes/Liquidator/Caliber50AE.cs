@@ -3,27 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Caliber9mm : MonoBehaviour
+public class Caliber50AE : MonoBehaviour
 {
     private CircleCollider2D _circleCollider2D;
     private Rigidbody2D _rigidbody2D;
-    private float _bulletSpeed = 30f;
-    private float _damage = 30f;
+    private float _bulletSpeed = 50f;
+    private float _damage = 45f;
     private Vector3 dir;
     private GameObject enemy;
-    private GameObject player;
-
-    
+    public GameObject gun;
     public GameObject target;
     
     void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Cursor");
-        player = GameObject.FindGameObjectWithTag("PlayerRB");
         _circleCollider2D = GetComponent<CircleCollider2D>();
         _rigidbody2D = GetComponent<Rigidbody2D>();
-        dir = (target.transform.position - player.transform.position).normalized;
-        Destroy(gameObject, 2f);
+        dir = (target.transform.position - transform.position).normalized;
+        Destroy(gameObject, 3f);
     }
 
     void Update()
@@ -33,7 +29,10 @@ public class Caliber9mm : MonoBehaviour
 
     private void Transformer()
     {
+     
+        transform.right = dir;
         _rigidbody2D.velocity = dir * _bulletSpeed;
+
     }
 
 
@@ -43,6 +42,7 @@ public class Caliber9mm : MonoBehaviour
         {
             if (other.gameObject.CompareTag("Enemy"))
             {
+                Debug.Log("Enemy Hit");
                 enemy = other.gameObject;
                 enemy.GetComponent<BasicEnemy>().TakeDamage(_damage);
                 Destroy(gameObject);

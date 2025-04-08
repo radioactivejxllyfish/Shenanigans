@@ -41,7 +41,7 @@ public class DamageZoneTest : MonoBehaviour
             elapsed = 0.0f;
             if (player != null)
             {
-                player.GetComponent<PlayerVarPool>().TakeDamage(DoT);
+                player.GetComponent<PlayerController>().TakeDamage(DoT, "Energy");
             }
         }
     }

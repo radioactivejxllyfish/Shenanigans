@@ -185,7 +185,7 @@ public class BossCleanser : BasicEnemy
                     Debug.Log("SlamAttack");
                     yield return new WaitForSeconds(0.8f);
                     player.GetComponent<PlayerController>().isStunned = true;
-                    player.GetComponent<PlayerVarPool>().TakeDamage(70);
+                    player.GetComponent<PlayerController>().TakeDamage(70, "Melee");
                     player.GetComponent<PlayerVarPool>().ApplyKnockback(transform.position, 5f);
                     yield return new WaitForSeconds(0.4f);
                     player.GetComponent<PlayerController>().isStunned = false;

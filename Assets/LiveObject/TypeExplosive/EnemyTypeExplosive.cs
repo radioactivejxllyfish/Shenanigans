@@ -252,7 +252,7 @@ public class EnemyTypeExplosive : BasicEnemy
                         }
                         if (Physics2D.Raycast(transform.position, (player.transform.position - transform.position).normalized, 3f))
                         {
-                            player.GetComponent<PlayerVarPool>().TakeDamage(damage);
+                            player.GetComponent<PlayerController>().TakeDamage(damage, "Explosive");
                         }
                         _cameraSmoother.CameraShake(0.2f, 0.25f);
                         spriteRenderer.sprite = _exploded;

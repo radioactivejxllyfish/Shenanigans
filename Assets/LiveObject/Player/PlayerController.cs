@@ -9,22 +9,37 @@ using Random = UnityEngine.Random;
 public class PlayerController : PlayerVarPool
 {
     public bool usingItem = false;
+    public bool usingSkill;
+
+    public float Multiplier_MeleeDamage;
+    public float Multiplier_RangedDamage;
+    public float Multiplier_SkillDamage;
+    public float Multiplier_UltimateDamage;
+
+    public float Resistance_Melee;
+    public float Resistance_Ranged;
+    public float Resistance_Explosive;
+    public float Resistance_Energy;
+
     public float _dashpower;
+
+    public string dashDir = "Roll";
+    public string walkDir = "LeftF";
+    
     public bool canDash = true;
     public bool hasDashed = false;
     public bool sprinting;
     public bool isDashing = false;
     public bool isMoving;
     public bool isStunned = false;
-    public bool ShadowStriking;
     public bool isDead = false;
-    public string dashDir = "Roll";
-    public string walkDir = "LeftF";
-    
+
+    public Stats playerStats;
     public PlayerAnimationHandler animatorHandler;
     public CursorController _cursorController;
     public AudioSource source;
     public GameObject grenade;
+    
     
 
     public AudioClip walk1;
@@ -36,44 +51,40 @@ public class PlayerController : PlayerVarPool
     public float currentSpeed;
     public float slowSpd;
     public int grenadeCount;
+    
+    public string Class;
+    
+    private float resistance;
+
     private void Start()
     {
-        cameraSmoother = Camera.main.GetComponent<CameraSmoother>();
-        source = GetComponent<AudioSource>();
-        cursor = GameObject.FindGameObjectWithTag("Cursor");
-        _cursorController = cursor.GetComponent<CursorController>();
-        playerRb = GetComponent<Rigidbody2D>();
+        Class = "U11_SpecialRecon";
         
-        hasDashed = false;
-        grenadeCount = 3;
-        _dashpower = 5f;
-        currentSpeed = 5f;
-        speed = 5f;
-        slowSpd = 2.5f;
-        maxHealth = 100f;
-        health = maxHealth;
-        
-        StartCoroutine("Sprint");
-        StartCoroutine(WalkSound());
+        playerStats = gameObject.AddComponent<Stats>();
+        if (playerStats != null)
+        {
+            cameraSmoother = Camera.main.GetComponent<CameraSmoother>();
+            source = GetComponent<AudioSource>();
+            cursor = GameObject.FindGameObjectWithTag("Cursor");
+            _cursorController = cursor.GetComponent<CursorController>();
+            playerRb = GetComponent<Rigidbody2D>();
+            StartCoroutine("Sprint");
+            StartCoroutine(WalkSound());
+        }
+        else
+        {
+            throw new NotImplementedException();
+        }
     }
 
     private void Awake()
     {
-
+        
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            isStunned = true;
-        }
-
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            isStunned = false;
-
-        }
+        
         health = Mathf.Clamp(health, 0, maxHealth);
         stamina = Mathf.Clamp(stamina,0, MAX_STAMINA);
         if (!isDead)
@@ -88,6 +99,45 @@ public class PlayerController : PlayerVarPool
         }
         OnDeath();
     }
+    
+    public void TakeDamage(float damage, string type)
+    {
+        switch (type)
+        {
+            case "Melee":
+                resistance = Resistance_Melee;
+                break;
+            case "Ranged":
+                resistance = Resistance_Ranged;
+                break;
+            case "Explosive":
+                resistance = Resistance_Explosive;
+                break;
+            case "Energy":
+                resistance = Resistance_Energy;
+                break;
+        }
+                
+        if (health > 0)
+        {
+            stamina -= damage * 1.85f;
+            float deduction;
+            if (armorCount > 0)
+            {
+                deduction = damage - armorCount;
+                armorCount = armorCount - damage;
+                if (armorCount < 0)
+                {
+                    health -= deduction;
+                }
+            }
+            else
+            {
+                health -= damage * resistance;
+            }
+            cameraSmoother.CameraShake(0.05f * damage * resistance,0.01f);
+        }
+    }
 
 
     private void ThrowGrenade()
@@ -101,7 +151,7 @@ public class PlayerController : PlayerVarPool
 
     private void MovementInput()
     {
-        if (Input.GetKey(KeyCode.LeftShift) && !isDashing && canSprint &&!ShadowStriking && !isStunned && movement != Vector3.zero)
+        if (Input.GetKey(KeyCode.LeftShift) && !isDashing && canSprint &&!usingSkill && !isStunned && movement != Vector3.zero)
         {
             sprinting = true;
         }
@@ -110,7 +160,7 @@ public class PlayerController : PlayerVarPool
             sprinting = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && sprinting && !hasDashed && stamina >= 35 && canDash && !isStunned && !ShadowStriking && movement != Vector3.zero)
+        if (Input.GetKeyDown(KeyCode.Space) && sprinting && !hasDashed && stamina >= 35 && canDash && !isStunned && !usingSkill && movement != Vector3.zero)
         {
             StartCoroutine("Dash");
         }
@@ -124,7 +174,7 @@ public class PlayerController : PlayerVarPool
         }
         WalkDirection();
         movement = new Vector2(xAxis, yAxis);
-        if (isStunned || ShadowStriking)
+        if (isStunned || usingSkill)
         {
             source.Stop();
             playerRb.velocity = Vector2.zero;
@@ -153,7 +203,7 @@ public class PlayerController : PlayerVarPool
                 animatorHandler.ChangeAnimationState("Walk_Backwards");
             }
         }
-        else if (playerRb.velocity.magnitude <= 0.2f && !ShadowStriking && !isDashing)
+        else if (playerRb.velocity.magnitude <= 0.2f && !usingSkill && !isDashing)
         {
             animatorHandler.ChangeAnimationState("Idle");
         }
@@ -199,8 +249,6 @@ public class PlayerController : PlayerVarPool
                 animatorHandler.ChangeAnimationState("Roll");
             }
         }
-        
-        
     }
 
     
@@ -320,8 +368,8 @@ public class PlayerController : PlayerVarPool
         else 
         {
             actualDashPower = _dashpower * 1.3f;
-            duration = 0.5f;
-            stunTime = 1.2f;
+            duration = 0.85f;
+            stunTime = 1f;
         }
 
         Vector2 direction = movement.normalized;
@@ -334,7 +382,7 @@ public class PlayerController : PlayerVarPool
         Invoke("StunTrigger", duration);
         while (elapsed < duration)
         {
-            actualDashPower -= 0.01f;
+            actualDashPower -= 0.1f;
             playerRb.AddForce(direction * actualDashPower, ForceMode2D.Impulse);
             elapsed += Time.deltaTime;
             yield return null;
