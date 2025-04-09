@@ -39,12 +39,18 @@ public class PlayerController : PlayerVarPool
     public CursorController _cursorController;
     public AudioSource source;
     public GameObject grenade;
-    
-    
 
+
+
+    float elapsed = 0f;
+
+    public float footstepInterval = 0.5f;
     public AudioClip walk1;
     public AudioClip walk2;
     public AudioClip walk3;
+    public AudioClip walk4;
+    public AudioClip dashBackwards;
+    public AudioClip dashBackwards2;
     public AudioClip dash;
 
     public bool underUI = false;
@@ -69,7 +75,6 @@ public class PlayerController : PlayerVarPool
             _cursorController = cursor.GetComponent<CursorController>();
             playerRb = GetComponent<Rigidbody2D>();
             StartCoroutine("Sprint");
-            StartCoroutine(WalkSound());
         }
         else
         {
@@ -84,11 +89,11 @@ public class PlayerController : PlayerVarPool
 
     private void Update()
     {
-        
         health = Mathf.Clamp(health, 0, maxHealth);
         stamina = Mathf.Clamp(stamina,0, MAX_STAMINA);
         if (!isDead)
         {
+            SoundFootstep();
             MovementInput();
             ThrowGrenade();
             Move();
@@ -163,6 +168,16 @@ public class PlayerController : PlayerVarPool
         if (Input.GetKeyDown(KeyCode.Space) && sprinting && !hasDashed && stamina >= 35 && canDash && !isStunned && !usingSkill && movement != Vector3.zero)
         {
             StartCoroutine("Dash");
+            if (dashDir == "LeftF" || dashDir == "RightF" || dashDir == "Roll")
+            {
+                source.clip = dash;
+            }
+            else
+            {
+                source.clip = dashBackwards;
+            }
+
+            StartCoroutine("PlaySound");
         }
     }
     public void Move()
@@ -174,6 +189,7 @@ public class PlayerController : PlayerVarPool
         }
         WalkDirection();
         movement = new Vector2(xAxis, yAxis);
+        
         if (isStunned || usingSkill)
         {
             source.Stop();
@@ -182,6 +198,15 @@ public class PlayerController : PlayerVarPool
         else
         {
             playerRb.velocity = movement.normalized * currentSpeed;
+        }
+
+        if (playerRb.velocity != Vector2.zero && !isDashing)
+        {
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
         }
         
         if (playerRb.velocity.magnitude >= 0.4f && !isDashing && !sprinting)
@@ -398,33 +423,66 @@ public class PlayerController : PlayerVarPool
     }
 
 
-    private IEnumerator WalkSound()
+    private void SoundFootstep()
     {
-        while (true)
+        
+        if (isMoving && !isStunned && !isDead)
         {
-            if (isMoving)
+            if (sprinting)
             {
-                int walkSound = Random.Range(1, 4);
-                if (walkSound == 1)
+                footstepInterval = 0.30f;
+            }
+            else
+            {
+                footstepInterval = 0.46f;
+            }
+            int x = Random.Range(1, 5);
+
+            if (elapsed < footstepInterval)
+            {
+                elapsed += Time.deltaTime;
+            }
+            else
+            {
+                elapsed = 0;
+                if (x == 1)
                 {
                     source.clip = walk1;
                 }
-                else if (walkSound == 2)
+                else if (x == 2)
                 {
                     source.clip = walk2;
                 }
-                else if (walkSound == 3)
+                else if (x == 3)
                 {
-                    source.clip = walk3;
+                    source.clip = walk2;
                 }
+                else
+                {
+                    source.clip = walk4;
+                }
+                
                 source.Play();
-                yield return new WaitForSeconds(Random.Range(0.4f, 0.6f));
             }
-            yield return null;
+        }
+        else
+        {
+            elapsed = 0;
         }
     }
-    
-    
+
+
+
+    private IEnumerator PlaySound()
+    {
+        bool played = false;
+        if (!played)
+        {
+            source.Play();
+            played = true;
+        }
+        yield return null;
+    }
 
     public void UseItemCountdown(float duration, string animation)
     {

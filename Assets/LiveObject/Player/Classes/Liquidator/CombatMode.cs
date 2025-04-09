@@ -9,8 +9,8 @@ public class CombatMode : MonoBehaviour
 {
     public GameObject player;
     private CircleCollider2D _circleCollider2D;
-    private float damage = 60f;
-    private float fireRate = 0.15f;
+    private float damage = 45f;
+    private float fireRate = 0.12f;
     private GameObject target;
     private List<GameObject> enemies = new List<GameObject>();
     private float closestDistance = Mathf.Infinity;
@@ -21,25 +21,78 @@ public class CombatMode : MonoBehaviour
     private int magazine = 120;
     private int ammo = 120;
 
+    private bool isResettingOrientation = false;
     private float elapsed = 0;
 
 
     void Start()
     {
+        gameObject.transform.DORotate(Vector2.right, 1f);
+
         _circleCollider2D = GetComponent<CircleCollider2D>();
     }
 
     void Update()
     {
 
-        TargetSelect();
         if (target != null)
         {
-            if (!target.gameObject.GetComponent<BasicEnemy>().isAlive)
+            var enemy = target.GetComponent<BasicEnemy>();
+
+            if (enemy == null)
             {
                 target = null;
             }
+            else if (enemy.health < 0)
+            {
+                target = null;
+            }
+            else if (Vector3.Distance(player.transform.position, target.transform.position) > 15f)
+            {
+                target = null;
+            }
+        }
+        TargetSelect();
+        FireAtTarget();
+    }
 
+
+    void TargetSelect()
+    {
+        if (target == null)
+        {
+            closestDistance = Mathf.Infinity;
+            foreach (GameObject enemy in enemies)
+            {
+                float distance = Vector2.Distance(enemy.transform.position,transform.position);
+                if (distance < closestDistance && distance < 15f && enemy.gameObject.GetComponent<BasicEnemy>().health > 0)
+                {
+                    target = enemy.gameObject;
+                }
+                else continue;
+            }
+        }
+        else if (target != null)
+        {
+            foreach (GameObject enemy in enemies)
+            {
+                float distance = Vector2.Distance(enemy.transform.position,transform.position);
+                if (distance < Vector2.Distance(target.transform.position,transform.position) && distance < 15f && enemy.gameObject.GetComponent<BasicEnemy>().health > 0)
+                {
+                    target = enemy.gameObject;
+                }
+                else continue;
+            }
+        }
+
+    }
+
+    private void FireAtTarget()
+    {
+        
+        if (target != null)
+        {
+            gameObject.transform.DOKill(false);
             if (playerAnimationHandler.Direction == "Right")
             {
                 transform.right = target.transform.position - transform.position;
@@ -48,6 +101,7 @@ public class CombatMode : MonoBehaviour
             {
                 transform.right = -(target.transform.position - transform.position);
             }
+
             if (ammo > 0)
             {
                 if (elapsed < fireRate)
@@ -57,41 +111,16 @@ public class CombatMode : MonoBehaviour
                 else
                 {
                     StartCoroutine("Shoot");
-
                     elapsed = 0;
                 }
             }
         }
         else
         {
-            transform.right = Vector2.right;
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            StartCoroutine("Shoot");
-        }
-    }
-
-    void TargetSelect()
-    {
-        if (enemies != null)
-        {
-            foreach (GameObject enemy in enemies)
+            if (!isResettingOrientation)
             {
-                if (enemy == null) continue;
-                if (!enemy.gameObject.GetComponent<BasicEnemy>().isAlive) continue;
-                float distance = Vector3.Distance(player.transform.position, enemy.transform.position);
-            
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    if (enemy.gameObject.GetComponent<BasicEnemy>().isAlive)
-                    {
-                        closestEnemy = enemy;
-                    }
-                }
-                target = closestEnemy;
+                StartCoroutine("ResetOrientation");
+                isResettingOrientation = true;
             }
         }
     }
@@ -102,25 +131,19 @@ public class CombatMode : MonoBehaviour
     {
         if (other != null)
         {
-            if (other.gameObject.CompareTag("Enemy") && target == null && other.gameObject.GetComponent<BasicEnemy>().isAlive)
+            if (other.gameObject.CompareTag("Enemy") && other.gameObject.GetComponent<BasicEnemy>().isAlive)
             {
-                enemies.Add(other.gameObject);
+                if (!enemies.Contains(other.gameObject))
+                    enemies.Add(other.gameObject);
             }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collider)
     {
-        if (collider != null)
+        if (collider.gameObject.CompareTag("Enemy"))
         {
-            if (collider.gameObject.CompareTag("Enemy"))
-            {
-                if (collider.gameObject == target)
-                {
-                    target = null;
-                }
-                enemies.Remove(collider.gameObject);
-            }
+            enemies.Remove(collider.gameObject);
         }
     }
 
@@ -137,5 +160,12 @@ public class CombatMode : MonoBehaviour
         ammo -= 1;
         yield return null;
 
+    }
+
+    private IEnumerator ResetOrientation()
+    {
+        gameObject.transform.DORotate(Vector2.right, 1);
+        yield return null;
+        isResettingOrientation = false;
     }
 }
