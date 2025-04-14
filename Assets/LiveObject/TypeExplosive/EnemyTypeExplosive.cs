@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class EnemyTypeExplosive : BasicEnemy
 {
@@ -29,13 +30,15 @@ public class EnemyTypeExplosive : BasicEnemy
     
     void Start()
     {
-
+        path = GetComponent<AIPath>();
         isStunned = false;
         isAlive = true;
         maxhealth = 450f;
         health = 450f;
         speed = 4f;
         damage = 120f;
+        moveSpeed = speed;
+        
 
     
         _cameraSmoother = Camera.main.GetComponent<CameraSmoother>();
@@ -66,6 +69,21 @@ public class EnemyTypeExplosive : BasicEnemy
         if (!_isDead)
         {
             Movement();
+            if (player != null)
+            {
+                if (_hasLineOfSight && !_exploding)
+                {
+                    path.canMove = true;
+                    path.maxSpeed = moveSpeed;
+                    path.destination = player.transform.position;
+                }
+            }
+        }
+        else
+        {
+            path.canMove = false;
+            path.maxSpeed = 0f;
+            path.destination = transform.position;
         }
         Mathf.Clamp(health, 0f, maxhealth);
         DeathHandler();
@@ -130,7 +148,7 @@ public class EnemyTypeExplosive : BasicEnemy
         {
             RaycastHit2D ray = Physics2D.Raycast(transform.position,(player.transform.position - transform.position).normalized);
             if (ray.collider != null)
-                {
+            {
                     if (ray.collider.CompareTag("PlayerRB"))
                     {
                         Debug.DrawRay(transform.position, (player.transform.position - transform.position).normalized);
@@ -138,13 +156,18 @@ public class EnemyTypeExplosive : BasicEnemy
                     }
                     else
                     {
-                        _hasLineOfSight = false;
+                        StartCoroutine("ForgetLOS");
                     }
-                }
+            }
         }
     }
 
-
+    private IEnumerator ForgetLOS()
+    {
+        
+        yield return new WaitForSeconds(Random.Range(3, 6f));
+        _hasLineOfSight = false;
+    }
 
     private IEnumerator Roaming()
     {
@@ -221,21 +244,15 @@ public class EnemyTypeExplosive : BasicEnemy
                 rigidBody.velocity = Vector2.zero;
                 yield return new WaitForSeconds(0.5f);
                 if (Vector2.Distance(player.transform.position, transform.position) < 2.5f)
-                {                    
+                {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        spriteRenderer.sprite = _exploding1;
+                        yield return new WaitForSeconds(0.08f);
+                        spriteRenderer.sprite = _exploding2;
+                        yield return new WaitForSeconds(0.08f);
+                    }
                     rigidBody.velocity = Vector2.zero;
-                    yield return new WaitForSeconds(0.08f);
-                    spriteRenderer.sprite = _exploding1;
-                    yield return new WaitForSeconds(0.08f);
-                    spriteRenderer.sprite = _exploding2;
-                    yield return new WaitForSeconds(0.08f);
-                    spriteRenderer.sprite = _exploding1;
-                    yield return new WaitForSeconds(0.08f);
-                    spriteRenderer.sprite = _exploding2;
-                    yield return new WaitForSeconds(0.08f);
-                    spriteRenderer.sprite = _exploding1;
-                    yield return new WaitForSeconds(0.08f);
-                    spriteRenderer.sprite = _exploding2;
-                    yield return new WaitForSeconds(0.3f);
 
                     explosiveParticles.Play();
                     if (Vector2.Distance(player.transform.position, transform.position) < 3f)

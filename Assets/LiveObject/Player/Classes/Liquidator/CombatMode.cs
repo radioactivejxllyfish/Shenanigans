@@ -24,6 +24,8 @@ public class CombatMode : MonoBehaviour
     private bool isResettingOrientation = false;
     private float elapsed = 0;
 
+    public bool combatMode = false;
+
 
     void Start()
     {
@@ -34,26 +36,29 @@ public class CombatMode : MonoBehaviour
 
     void Update()
     {
-
-        if (target != null)
+        if (combatMode)
         {
-            var enemy = target.GetComponent<BasicEnemy>();
+            if (target != null)
+            {
+                var enemy = target.GetComponent<BasicEnemy>();
 
-            if (enemy == null)
-            {
-                target = null;
+                if (enemy == null)
+                {
+                    target = null;
+                }
+                else if (enemy.health < 0)
+                {
+                    target = null;
+                }
+                else if (Vector3.Distance(player.transform.position, target.transform.position) > 15f)
+                {
+                    target = null;
+                }
             }
-            else if (enemy.health < 0)
-            {
-                target = null;
-            }
-            else if (Vector3.Distance(player.transform.position, target.transform.position) > 15f)
-            {
-                target = null;
-            }
+            TargetSelect();
+            FireAtTarget();
         }
-        TargetSelect();
-        FireAtTarget();
+
     }
 
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Pathfinding;
 
 public class BasicEnemy : MonoBehaviour
 {
@@ -20,6 +21,10 @@ public class BasicEnemy : MonoBehaviour
     public Rigidbody2D rigidBody;
     public CircleCollider2D sight;
     public SpriteRenderer spriteRenderer;
+    
+    public AIPath path;
+    public float moveSpeed;
+    public Transform target;
     
     
     
