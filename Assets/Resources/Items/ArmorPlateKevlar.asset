@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 095c6287e7824dc46a42b10a1781677c, type: 3}
-  m_Name: ArmorPlateSteel
+  m_Name: ArmorPlateKevlar
   m_EditorClassIdentifier: 
-  itemType: 3
+  itemType: 4
   itemName: 
   isConsumable: 1
   healAmount: 0
-  addArmor: 40
+  addArmor: 25
   restoreStamina: 0
   sprite: {fileID: 21300000, guid: 8534dc93f60fef34380efb4f6cc83e0f, type: 3}
   description: Steel armor plate. Wear  to reduce oncoming damage.
-  basePrice: 600
+  basePrice: 300

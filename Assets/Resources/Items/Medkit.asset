@@ -20,3 +20,4 @@ MonoBehaviour:
   restoreStamina: 55
   sprite: {fileID: 21300000, guid: 0c7c79a18b5842b4ea2b076b8c68f295, type: 3}
   description: Standard medkit. Restores 75hp and 55 stamina
+  basePrice: 1250

@@ -20,3 +20,4 @@ MonoBehaviour:
   restoreStamina: 100
   sprite: {fileID: 21300000, guid: 70932a8fe5e05f946ad2f5ae9e7bd1b6, type: 3}
   description: Energy drink can. Instantly restore 100 stamina.
+  basePrice: 400

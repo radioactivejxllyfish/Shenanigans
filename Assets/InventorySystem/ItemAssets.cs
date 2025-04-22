@@ -11,6 +11,9 @@ public class ItemAssets : ScriptableObject
     public int healAmount;
     public int addArmor;
     public int restoreStamina;
+    public int addThrowables;
     public Sprite sprite;
     public string description;
+    public int basePrice;
+    
 }

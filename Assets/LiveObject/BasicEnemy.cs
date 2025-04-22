@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
-using Random = UnityEngine.Random;
+﻿using System.Collections;
+using DG.Tweening;
 using Pathfinding;
+using UnityEngine;
 
 public class BasicEnemy : MonoBehaviour
 {
@@ -13,7 +12,7 @@ public class BasicEnemy : MonoBehaviour
 
     public bool isAlive;
     public bool isStunned;
-    
+
     public Vector2 direction;
 
     public Animator animator;
@@ -21,27 +20,23 @@ public class BasicEnemy : MonoBehaviour
     public Rigidbody2D rigidBody;
     public CircleCollider2D sight;
     public SpriteRenderer spriteRenderer;
-    
+
     public AIPath path;
     public float moveSpeed;
     public Transform target;
-    
-    
-    
+
+
     public void TakeDamage(float dmg)
     {
         health -= damage;
-        speed -= speed * (3f/100f) ;
-        StartCoroutine(StunPeek());
+        speed -= speed * (3f / 100f);
+        // StartCoroutine(StunPeek());
     }
 
     public IEnumerator StunPeek()
     {
-        rigidBody.transform.rotation = Quaternion.Euler(0,0, Random.Range(-5f, 5f));
-        yield return new WaitForSeconds(0.05f);
-        rigidBody.transform.rotation = Quaternion.Euler(0,0, 0);
+        gameObject.transform.DOShakeRotation(1f);
+        gameObject.transform.DOKill();
         yield return null;
     }
-    
-
 }

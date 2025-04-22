@@ -30,6 +30,11 @@ public class ItemUsageHandler : MonoBehaviour
             {
                 RestoreStamina(item.restoreStamina);
             }
+
+            if (item.addThrowables > 0)
+            {
+                AddThrowables(item.addThrowables);
+            }
         }
     }
     
@@ -47,6 +52,11 @@ public class ItemUsageHandler : MonoBehaviour
         {
             playerController.armorCount += amount;
         }
+    }
+    
+    private void AddThrowables(int amount)
+    {
+        playerController.grenadeCount += amount;
     }
 
     private void RestoreStamina(int amount)
