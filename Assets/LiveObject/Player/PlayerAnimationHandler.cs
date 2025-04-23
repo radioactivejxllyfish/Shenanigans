@@ -10,7 +10,7 @@ public class PlayerAnimationHandler : MonoBehaviour
     private float _velocity;
     public Animator headAnimator;
     public Animator torsoAnimator;
-    private bool combatMode;
+    public bool combatMode;
     public Ult_CombatMode ult_CombatMode;
 
     public string Direction;
@@ -18,7 +18,6 @@ public class PlayerAnimationHandler : MonoBehaviour
     private CursorController _cursor;
     private string currentState;
     private bool ModeSwitching = false;
-    public bool CombatMode = false;
     
     private bool engage = false;
     private bool disengage = false;

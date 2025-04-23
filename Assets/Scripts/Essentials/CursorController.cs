@@ -20,9 +20,9 @@ public class CursorController : MonoBehaviour
 
     void Update()
     {
-        if (!_player.GetComponent<PlayerController>().underUI)
+        if (!_playerController.underUI)
         {
-            _spriteRenderer.color = Color.red;
+            _spriteRenderer.enabled = false;
             if (_camera == null)
             {
                 _camera = Camera.main;
@@ -55,7 +55,7 @@ public class CursorController : MonoBehaviour
             }
             else
             {
-                _spriteRenderer.enabled = false;
+                _spriteRenderer.enabled = true;
                 _player = GameObject.FindGameObjectWithTag("PlayerRB");
                 transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             }

@@ -46,7 +46,7 @@ public class Ult_CombatMode : MonoBehaviour
         animator.Play("Retract");
         yield return new WaitForSeconds(0.5f);
         complex.SetActive(false);
-        playerAnimationHandler.CombatMode = false;
+        playerAnimationHandler.combatMode = false;
     }
     
 }

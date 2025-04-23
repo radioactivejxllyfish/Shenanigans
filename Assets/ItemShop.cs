@@ -74,14 +74,12 @@ public class ItemShop : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Player In Range");
 
         if (collision != null)
         {
             if (collision.gameObject.tag == "PlayerRB")
             {
                 playerInRange = true;
-                Debug.Log("Player In Range");
             }
         }
 

@@ -59,6 +59,8 @@ public class PlayerController : PlayerVarPool
 
     private float resistance;
 
+    public float ultMeter;
+
     private void Start()
     {
         Class = "U11_SpecialRecon";
@@ -77,6 +79,8 @@ public class PlayerController : PlayerVarPool
         {
             throw new NotImplementedException();
         }
+
+        ultMeter = 100;
     }
 
     private void Awake()
@@ -175,9 +179,18 @@ public class PlayerController : PlayerVarPool
         if (Input.GetKeyDown(KeyCode.Space) && sprinting && !hasDashed && stamina >= 35 && canDash && !isStunned &&
             !usingSkill && movement != Vector3.zero)
         {
-            StartCoroutine("Dash");
-            source.clip = dash;
-            StartCoroutine("PlaySound");
+            if (playerRb.velocity.x > 0 && _cursorController.Direction == "Right")
+            {
+                StartCoroutine("Dash");
+                source.clip = dash;
+                StartCoroutine("PlaySound");
+            }
+            if (playerRb.velocity.x < 0 && _cursorController.Direction == "Left")
+            {
+                StartCoroutine("Dash");
+                source.clip = dash;
+                StartCoroutine("PlaySound");
+            }
         }
     }
     public void Move()
