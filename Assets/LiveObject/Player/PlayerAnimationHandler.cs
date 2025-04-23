@@ -11,13 +11,18 @@ public class PlayerAnimationHandler : MonoBehaviour
     public Animator headAnimator;
     public Animator torsoAnimator;
     private bool combatMode;
+    public Ult_CombatMode ult_CombatMode;
 
     public string Direction;
 
     private CursorController _cursor;
     private string currentState;
     private bool ModeSwitching = false;
-    private bool CombatMode = false;
+    public bool CombatMode = false;
+    
+    private bool engage = false;
+    private bool disengage = false;
+
     void Start()
     {
         _cursor = GameObject.FindGameObjectWithTag("Cursor").GetComponent<CursorController>();
@@ -32,17 +37,27 @@ public class PlayerAnimationHandler : MonoBehaviour
         if (!playerController.isDead && !playerController.isStunned)
         {
             Flip();
-            if ( !ModeSwitching &&!combatMode && Input.GetKeyDown(KeyCode.T))
+            if (ult_CombatMode.combatMode)
             {
-                StartCoroutine("SwitchMode");
-                combatMode = true;
-                StartCoroutine("CombatEngage");
+                if (!engage)
+                {
+                    StartCoroutine("SwitchMode");
+                    combatMode = true;
+                    StartCoroutine("CombatEngage");
+                    engage = true;
+                    disengage = false; // reset the other flag
+                }
             }
-            else if ( !ModeSwitching && combatMode && Input.GetKeyDown(KeyCode.T))
+            else
             {
-                StartCoroutine("SwitchMode");
-                combatMode = false;
-                StartCoroutine("CombatDisengage");
+                if (!disengage)
+                {
+                    StartCoroutine("SwitchMode");
+                    combatMode = false;
+                    StartCoroutine("CombatDisengage");
+                    disengage = true;
+                    engage = false; // reset the other flag
+                }
             }
         }
         _velocity = playerRb.velocity.magnitude;

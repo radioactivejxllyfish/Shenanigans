@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class CombatMode : MonoBehaviour
 {
+    public Ult_CombatMode ult_combatMode;
     public GameObject player;
     private CircleCollider2D _circleCollider2D;
     private float damage = 45f;
@@ -36,7 +37,7 @@ public class CombatMode : MonoBehaviour
 
     void Update()
     {
-        if (combatMode)
+        if (ult_combatMode.combatMode)
         {
             if (target != null)
             {

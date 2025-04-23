@@ -16,6 +16,7 @@ public class AIAgentTest : MonoBehaviour
 
     private void Update()
     {
+        
         path.maxSpeed = moveSpeed;
         path.destination = target.position;
     }
