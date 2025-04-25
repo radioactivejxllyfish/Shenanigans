@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class PlayerController : PlayerVarPool
@@ -31,6 +32,9 @@ public class PlayerController : PlayerVarPool
     public bool isMoving;
     public bool isStunned;
     public bool isDead;
+    
+    private Vector2 lastPosition;
+    private Vector2 actualVelocity;
 
     public Stats playerStats;
     public PlayerAnimationHandler animatorHandler;
@@ -110,6 +114,28 @@ public class PlayerController : PlayerVarPool
         }
 
         OnDeath();
+
+
+    }
+
+    private void FixedUpdate()
+    {
+        PositionCalculation();
+        
+        if (actualVelocity.magnitude > 0.01f) {
+            // The object is actually moving
+            Debug.Log("Object is moving");
+        } else {
+            // The object is stationary (or barely moving)
+            Debug.Log("Object is NOT moving");
+        }
+    }
+
+    private void PositionCalculation()
+    {
+        Vector2 currentPosition = transform.position;
+        actualVelocity = (currentPosition - lastPosition) / Time.deltaTime;
+        lastPosition = currentPosition;
     }
 
     public void TakeDamage(float damage, string type)
@@ -345,16 +371,17 @@ public class PlayerController : PlayerVarPool
         stamina -= 25;
 
         Invoke("StunTrigger", duration);
-        while (elapsed < duration)
+        while (elapsed < duration && actualVelocity.magnitude > 0)
         {
-            actualDashPower -= 0.1f;
+            if (actualDashPower > 0)
+            {
+                actualDashPower -= 0.01f;
+            }
+
             playerRb.AddForce(direction * actualDashPower, ForceMode2D.Impulse);
             elapsed += Time.deltaTime;
             yield return null;
         }
-
-        yield return new WaitForSeconds(stunTime);
-
         isDashing = false;
         canDash = true;
         isStunned = false;

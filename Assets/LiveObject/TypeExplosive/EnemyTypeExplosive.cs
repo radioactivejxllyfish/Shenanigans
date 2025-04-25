@@ -94,12 +94,10 @@ public class EnemyTypeExplosive : BasicEnemy
 
         if (path.velocity.x > 0)
         {
-            Debug.Log("Moving right");
             Renderer.transform.localScale = new Vector3(-4, 4, 4);
         }
         else if (path.velocity.x <= 0)
         {
-            Debug.Log("Moving left");
 
             Renderer.transform.localScale = new Vector3(4, 4, 4);
         }

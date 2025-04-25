@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -279.42493, y: -54.704742}
+  m_AnchoredPosition: {x: -428.3003, y: -57.19989}
   m_SizeDelta: {x: 100, y: 12.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &406261291583095307
@@ -229,7 +229,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -130.0249, y: -72.6048}
+  m_AnchoredPosition: {x: -278.90027, y: -75.099945}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1084542312295720564
@@ -340,7 +340,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -426.6, y: -74.1}
+  m_AnchoredPosition: {x: -575.47534, y: -76.59515}
   m_SizeDelta: {x: 100, y: 12.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &3415604667481714463
@@ -419,14 +419,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2117015524340951741}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.21362513, w: 0.9769157}
+  m_LocalRotation: {x: -0, y: -0, z: 0.2652431, w: 0.96418166}
   m_LocalPosition: {x: -0.473, y: -0.045, z: 0}
   m_LocalScale: {x: 6, y: 6, z: 6}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 7511077121571656364}
   m_Father: {fileID: 1921168763525910535}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 24.67}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30.763}
 --- !u!212 &7281679560411133796
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -513,7 +513,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -246.12457, y: -73.50488}
+  m_AnchoredPosition: {x: -395, y: -76}
   m_SizeDelta: {x: 512, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7030293216281992177
@@ -923,6 +923,7 @@ GameObject:
   - component: {fileID: 7672714260717767268}
   - component: {fileID: 2435719786075977520}
   - component: {fileID: 3499990861575106681}
+  - component: {fileID: 4312319742554742223}
   m_Layer: 0
   m_Name: HumanoidRootPart
   m_TagString: PlayerRB
@@ -985,7 +986,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.055
+  m_Volume: 0.022
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1183,6 +1184,23 @@ MonoBehaviour:
   slowSpd: 0
   grenadeCount: 3
   Class: 
+  ultMeter: 0
+--- !u!114 &4312319742554742223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4663795811032701941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9e416a91cf5474d9f9addb09e4765a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerAnimationHandler: {fileID: 8935698785209662246}
+  complex: {fileID: 8868771622769498025}
+  combatMode: 0
+  animator: {fileID: 2994247622215960101}
 --- !u!1 &5064420581086344496
 GameObject:
   m_ObjectHideFlags: 0
@@ -1326,13 +1344,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5678659851769485909}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0.21428677, w: 0.9767708}
+  m_LocalRotation: {x: -0, y: -0, z: -0.2662462, w: 0.9639051}
   m_LocalPosition: {x: 0, y: 0.171, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8668026705044826810}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -24.747}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -30.882}
 --- !u!212 &331776111453547241
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1397,9 +1415,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3753060f0aaccb3429740dd0672a3e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ult_combatMode: {fileID: 4312319742554742223}
   player: {fileID: 4663795811032701941}
   playerAnimationHandler: {fileID: 8935698785209662246}
   bullet: {fileID: 3491869094732333310, guid: 83d1e46cae8d70346b54d659342c621c, type: 3}
+  combatMode: 0
 --- !u!58 &5449078705966747342
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1584,6 +1604,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   headAnimator: {fileID: 3318897867355981906}
   torsoAnimator: {fileID: 8676134893632759667}
+  combatMode: 0
+  ult_CombatMode: {fileID: 4312319742554742223}
   Direction: 
 --- !u!1 &7082987281814647792
 GameObject:
@@ -2185,13 +2207,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1921168763525910535}
+  - component: {fileID: 2994247622215960101}
   m_Layer: 0
   m_Name: CombatMode
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1921168763525910535
 Transform:
   m_ObjectHideFlags: 0
@@ -2208,6 +2231,27 @@ Transform:
   - {fileID: 8668026705044826810}
   m_Father: {fileID: 7405016236330372177}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &2994247622215960101
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8868771622769498025}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 24d41ba82bc789e428d0fb76813cd2f0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8969174862567814198
 GameObject:
   m_ObjectHideFlags: 0
@@ -2242,7 +2286,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -279.42493, y: -95.70474}
+  m_AnchoredPosition: {x: -428.3003, y: -98.19989}
   m_SizeDelta: {x: 100, y: 12.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7215065672672415414
